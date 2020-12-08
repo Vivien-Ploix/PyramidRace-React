@@ -9,7 +9,7 @@ const HomeSection = () => {
                 <div className="col-lg-6">
                     <div className="section-title pb-10">
                         <h4 className="title">Pyramid Race !</h4>
-                        <p className="text">En jouant à ce jeu tu amélioreras ta culture générale et tu pourras humulier tes amis en montrant que c'est bien toi qui te tiens au somment de la pyramide !</p>
+                        <p className="text">En jouant à ce jeu tu amélioreras ta culture générale et tu pourras humulier tes amis en montrant que c'est bien toi qui te tiens au sommet de la pyramide !</p>
                     </div> 
                 </div>
             </div> 
