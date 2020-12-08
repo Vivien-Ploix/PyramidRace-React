@@ -46,7 +46,7 @@ const Login = () => {
                                        <button type="submit" class="main-btn">Me connecter</button>
                                    </div> 
                                </div>
-                               <img src = '/assets/images/aztequelog.png' style={{marginTop: "50px"}}></img>
+                               <img src = '/assets/images/aztequelog.png' style={{marginTop: "100px"}}></img>
                            </div>
                        </form>
                    </div> 

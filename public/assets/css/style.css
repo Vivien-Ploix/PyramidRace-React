@@ -605,7 +605,7 @@ p {
     padding-top: 120px;
     padding-bottom: 120px;
     position: relative;
-    border-style: none;
+    border-color: whitesmoke;
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
@@ -637,12 +637,14 @@ p {
     .services-content .services-content {
         padding-left: 0;
         padding-top: 15px;
+        border-color: whitesmoke;
     }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
     .services-content .services-content {
         padding-left: 15px;
+        border-color: whitesmoke;
         padding-top: 0;
     }
 }
@@ -664,6 +666,7 @@ p {
 .services-image {
     position: absolute;
     width: 40%;
+    border-color: whitesmoke;
     height: 100%;
     top: 0;
     right: 0;

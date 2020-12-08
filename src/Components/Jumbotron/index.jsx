@@ -1,5 +1,10 @@
 import React from 'react';
-
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Link
+} from "react-router-dom";
 
 
 const Jumbotron = () => {
@@ -14,7 +19,7 @@ const Jumbotron = () => {
                           <h2>Confronte ta culture générale avec d'autres joueurs !</h2>
                           <p className="text">Prouve que tu es le meilleur en atteignant le haut de la pyramide ou tu erreras dans ses labyrinthe jusqu'à ce que tu te transforme en momie</p>
                           <ul className="header-btn">
-                             <li><a className="main-btn btn-one" rel="nofollow" href="https://rebrand.ly/start-ud">Je veux jouer !</a></li>
+                             <li><Link to="/sign-up" className="main-btn btn-one"  >Je veux jouer !</Link></li>
               
                           </ul>
                        </div> 
