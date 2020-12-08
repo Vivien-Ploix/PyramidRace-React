@@ -27,16 +27,16 @@ const NavBar = () => {
                      <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
                           <ul class="navbar-nav m-auto">
                                     <li class="nav-item">
-                                        <Link to="/" className="page-scroll" >Acceuil</Link>
+                                        <Link to="/"  >Acceuil</Link>
                                     </li>
                                     <li class="nav-item">
                                         <a className="page-scroll" href="/#information">Informations</a>
                                     </li>
                                     <li class="nav-item">
-                                    <Link to="/sign-up" className="page-scroll" >S'incrire</Link>
+                                    <Link to="/sign-up"  >S'incrire</Link>
                                     </li>
                                     <li class="nav-item">
-                                    <Link to="/login" className="page-scroll" >Se connecter</Link>
+                                    <Link to="/login" >Se connecter</Link>
                                     </li>
                             </ul>
 
