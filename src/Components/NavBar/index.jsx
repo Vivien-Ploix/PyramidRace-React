@@ -27,7 +27,7 @@ const NavBar = () => {
                      <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
                           <ul class="navbar-nav m-auto">
                                     <li class="nav-item">
-                                        <Link to="/"  >Acceuil</Link>
+                                        <Link to="/"  >Accueil</Link>
                                     </li>
                                     <li class="nav-item">
                                         <a className="page-scroll" href="/#information">Informations</a>
