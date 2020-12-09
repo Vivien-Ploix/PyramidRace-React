@@ -32,16 +32,16 @@ const NavBar = () => {
   }, [isLoggedIn]);
 
   return (
-    <div class="navgition navgition-transparent">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <nav class="navbar navbar-expand-lg">
+    <div className="navgition navgition-transparent">
+      <div className="container">
+        <div className="row">
+          <div className="col-lg-12">
+            <nav className="navbar navbar-expand-lg">
               <Link to="/">
                 <img src="assets/images/logo.svg" alt="Logo"></img>
               </Link>
               <button
-                class="navbar-toggler"
+                className="navbar-toggler"
                 type="button"
                 data-toggle="collapse"
                 data-target="#navbarOne"
@@ -49,33 +49,49 @@ const NavBar = () => {
                 aria-expanded="false"
                 aria-label="Toggle navigation"
               >
-                <span class="toggler-icon"></span>
-                <span class="toggler-icon"></span>
-                <span class="toggler-icon"></span>
+                <span className="toggler-icon"></span>
+                <span className="toggler-icon"></span>
+                <span className="toggler-icon"></span>
               </button>
-              <div class="collapse navbar-collapse sub-menu-bar" id="navbarOne">
-                <ul class="navbar-nav m-auto">
-                  <li class="nav-item">
+              <div
+                className="collapse navbar-collapse sub-menu-bar"
+                id="navbarOne"
+              >
+                <ul className="navbar-nav m-auto">
+                  <li className="nav-item">
                     <Link to="/">Accueil</Link>
                   </li>
-                  <li class="nav-item">
+                  <li className="nav-item">
                     <a className="page-scroll" href="/#information">
                       Informations
                     </a>
                   </li>
                   {tokenCookie && (
+<<<<<<< HEAD
                     <li class="nav-item">
                       <Link to="/" onClick={handleClickLogout}>
                         Se déconnecter
                       </Link>
                     </li>
+=======
+                    <>
+                      <li className="nav-item">
+                        <Link to="/gameinfos">Profil</Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link to="/" onClick={handleClickLogout}>
+                          Se déconnecter
+                        </Link>
+                      </li>
+                    </>
+>>>>>>> develop
                   )}
                   {!tokenCookie && (
                     <>
-                      <li class="nav-item">
+                      <li className="nav-item">
                         <Link to="/sign-up">S'incrire</Link>
                       </li>
-                      <li class="nav-item">
+                      <li className="nav-item">
                         <Link to="/login">Se connecter</Link>
                       </li>
                     </>
@@ -83,7 +99,7 @@ const NavBar = () => {
                 </ul>
               </div>
 
-              <div class="navbar-social d-none d-sm-flex align-items-center">
+              <div className="navbar-social d-none d-sm-flex align-items-center">
                 <span>NOS RESEAUX</span>
                 <ul>
                   <li>
@@ -92,13 +108,13 @@ const NavBar = () => {
                       target="_blank"
                     >
                       {" "}
-                      <i class="lni-facebook-filled"></i>
+                      <i className="lni-facebook-filled"></i>
                     </a>
                   </li>
                   <li>
                     <a href="https://twitter.com/RacePyramid" target="_blank">
                       {" "}
-                      <i class="lni-twitter-original"></i>
+                      <i className="lni-twitter-original"></i>
                     </a>
                   </li>
                   <li>
@@ -107,13 +123,13 @@ const NavBar = () => {
                       target="_blank"
                     >
                       {" "}
-                      <i class="lni-instagram-original"></i>
+                      <i className="lni-instagram-original"></i>
                     </a>
                   </li>
                   <li>
                     <a href="#" target="_blank">
                       {" "}
-                      <i class="lni-linkedin-original"></i>
+                      <i className="lni-linkedin-original"></i>
                     </a>
                   </li>
                 </ul>
