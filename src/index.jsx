@@ -6,12 +6,14 @@ import Home from "./Pages/Home";
 import Footer from "./Components/Footer/";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/Signup";
+import GameInfos from "./Pages/GameInfos"
 
 const App = () => {
   return (
     <div>
+      
       <Router>
-        <NavBar />
+      <NavBar />
         <Switch>
           <Route exact path="/">
             <Home />
@@ -22,9 +24,13 @@ const App = () => {
           <Route path="/sign-up">
             <SignUp />
           </Route>
+          <Route path="/gameInfos">
+            <GameInfos />
+          </Route>
         </Switch>
+        <Footer />
       </Router>
-      <Footer />
+    
     </div>
   );
 };
