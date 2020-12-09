@@ -5,7 +5,6 @@ export const authSuccess = (response) => {
         type: AUTHENTICATION_SUCCESS,
         id: response.data.id,
         attributes: response.data.attributes,
-        user: response,
     };
 };
 

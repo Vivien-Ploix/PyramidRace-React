@@ -1,7 +1,6 @@
 import { AUTHENTICATION_SUCCESS, LOGOUT_SUCCESS } from './authTypes';
 
 const initialState = {
-    user: null,
     id: null,
     attributes: null,
     isLoggedIn: null
@@ -14,7 +13,6 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 id: action.id,
                 attributes: action.attributes,
-                user: action.user,
                 isLoggedIn: true
             }
         case LOGOUT_SUCCESS:
