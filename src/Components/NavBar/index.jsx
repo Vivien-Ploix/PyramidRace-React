@@ -1,41 +1,35 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 import { useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux" 
-import { logoutSuccess } from '../../redux/authentication/authActions'
-
-
-
+import { useSelector, useDispatch } from "react-redux";
+import { logoutSuccess } from "../../redux/authentication/authActions";
 
 const NavBar = () => {
-
-
-  const tokenCookie = Cookies.get('token')
-  const isLoggedIn = useSelector(state => state.isLoggedIn)
-  const dispatch = useDispatch()
-
+  const tokenCookie = Cookies.get("token");
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const dispatch = useDispatch();
 
   const handleClickLogout = () => {
-      fetch('https://pyramid-race-api.herokuapp.com/logout', {
-        method: 'delete',
-        Bearer: {
-          'token': `${tokenCookie}`, 
-          'Content-Type': 'application/json'
-        }
-      })
+    fetch("https://pyramid-race-api.herokuapp.com/logout", {
+      method: "delete",
+      Bearer: {
+        token: `${tokenCookie}`,
+        "Content-Type": "application/json",
+      },
+    })
       .then((response) => {
-        console.log(response)
-        console.log(Cookies.get("token"))
-        Cookies.remove("token")
-        dispatch(logoutSuccess())
+        console.log(response);
+        console.log(Cookies.get("token"));
+        Cookies.remove("token");
+        dispatch(logoutSuccess());
       })
       .catch((error) => console.log(error));
   };
 
   useEffect(() => {
-    console.log('isLoggedIn changed')
-  }, [isLoggedIn])
+    console.log("isLoggedIn changed");
+  }, [isLoggedIn]);
 
   return (
     <div class="navgition navgition-transparent">
@@ -69,12 +63,14 @@ const NavBar = () => {
                       Informations
                     </a>
                   </li>
-                  { tokenCookie && (
+                  {tokenCookie && (
                     <li class="nav-item">
-                      <Link to="/" onClick={handleClickLogout}>Se déconnecter</Link>
+                      <Link to="/" onClick={handleClickLogout}>
+                        Se déconnecter
+                      </Link>
                     </li>
                   )}
-                  { !tokenCookie && (
+                  {!tokenCookie && (
                     <>
                       <li class="nav-item">
                         <Link to="/sign-up">S'incrire</Link>
@@ -91,7 +87,10 @@ const NavBar = () => {
                 <span>NOS RESEAUX</span>
                 <ul>
                   <li>
-                    <a href="https://www.facebook.com/PyramidRace" target="_blank">
+                    <a
+                      href="https://www.facebook.com/PyramidRace"
+                      target="_blank"
+                    >
                       {" "}
                       <i class="lni-facebook-filled"></i>
                     </a>
@@ -103,7 +102,10 @@ const NavBar = () => {
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.instagram.com/pyramid.race/" target="_blank">
+                    <a
+                      href="https://www.instagram.com/pyramid.race/"
+                      target="_blank"
+                    >
                       {" "}
                       <i class="lni-instagram-original"></i>
                     </a>
