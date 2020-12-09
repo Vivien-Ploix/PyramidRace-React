@@ -7,7 +7,7 @@ import './style.scss'
 
 const GameInfos = () => {
   return (
-    <div>
+    <div className ='GameInfo-div'>
       <JumbotronGameInfos/>
       <div className= 'GameInfoContainer'>
       <GamePlayed />

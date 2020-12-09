@@ -1,3 +1,28 @@
+html {
+    height: 100%;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    color: #121212;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.GameInfo-div {
+    height: 100%;
+    font-family: "Poppins", sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    color: #121212;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 .GameInfoContainer {
     display: flex;
     flex-direction: row;

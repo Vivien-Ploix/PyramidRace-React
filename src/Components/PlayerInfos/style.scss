@@ -1,3 +1,17 @@
+html {
+    height: 100%;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    color: #121212;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 img {
     max-width: 100%;
 }
@@ -5,13 +19,14 @@ img {
 .container-profil {
     background: rgb(255, 255, 255);
     margin-right: 5%;
+    margin-left: 5%
 }
 
 .card-profil {
     position: relative;
     background: #e0741b;
-    width: 400px;
-    height: 75vh;
+    width: 99%;
+    height: 76%;
     border-radius: 6px;
     padding: 2rem;
     color: rgb(163, 22, 22);
@@ -42,7 +57,7 @@ img {
     &__svg {
         position: absolute;
         left: 0;
-        top: 115px;
+        top: 18%;
     }
 }
 
