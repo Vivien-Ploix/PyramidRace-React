@@ -67,13 +67,6 @@ const NavBar = () => {
                     </a>
                   </li>
                   {tokenCookie && (
-<<<<<<< HEAD
-                    <li class="nav-item">
-                      <Link to="/" onClick={handleClickLogout}>
-                        Se déconnecter
-                      </Link>
-                    </li>
-=======
                     <>
                       <li className="nav-item">
                         <Link to="/gameinfos">Profil</Link>
@@ -84,7 +77,6 @@ const NavBar = () => {
                         </Link>
                       </li>
                     </>
->>>>>>> develop
                   )}
                   {!tokenCookie && (
                     <>

@@ -20,6 +20,20 @@ table {
     background-color: #3b2e1bea;
 }
 
+html {
+    height: 100%;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    color: #121212;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 .tbl-content {
     height: 600px;
     overflow-x: auto;
