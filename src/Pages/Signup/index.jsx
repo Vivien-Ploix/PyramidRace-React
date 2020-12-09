@@ -1,7 +1,14 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+import Cookies from 'js-cookie'
+import { authSuccess } from '../../redux/authentication/authActions'
+import {useDispatch} from "react-redux"
+
 
 const SignUp = () => {
 
+  const history = useHistory()
+  const dispatch = useDispatch()
   var myForm = document.getElementById('signup-form')
 
   const handleClickSignup = (e) => {
@@ -20,6 +27,18 @@ const SignUp = () => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
+    })
+    .then((response) => {
+      for (var pair of response.headers.entries()) { // accessing the entries
+        if (pair[0] === "authorization") { // key I'm looking for in this instance
+        Cookies.set("token", pair[1])
+        }
+      }
+      return response.json()
+    })
+    .then((response) => {
+      dispatch(authSuccess(response))
+      history.push('/')
     })
     .catch((error) => console.log(error))
   }

@@ -1,6 +1,13 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
+import Cookies from 'js-cookie'
+import { authSuccess } from '../../redux/authentication/authActions'
+import {useDispatch} from "react-redux"
 
 const Login = () => {
+
+  const history = useHistory();
+  const dispatch = useDispatch()
 
   const handleClickLogin = (e) => {
     e.preventDefault()
@@ -19,10 +26,16 @@ const Login = () => {
     })
     .then((response) => {
       for (var pair of response.headers.entries()) { // accessing the entries
-        console.log(pair)
+        if (pair[0] === "authorization") { // key I'm looking for in this instance
+        Cookies.set("token", pair[1])
+        }
       }
       return response.json()
-    })    
+    })
+    .then((response) => {
+      dispatch(authSuccess(response))
+      history.push('/')
+    })
     .catch((error) => console.log(error))
   }
   return (

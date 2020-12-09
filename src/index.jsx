@@ -7,31 +7,33 @@ import Footer from "./Components/Footer/";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/Signup";
 import GameInfos from "./Pages/GameInfos"
+import { Provider } from "react-redux";
+import store from './redux/store'
 
 const App = () => {
   return (
-    <div>
-      
-      <Router>
-      <NavBar />
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/sign-up">
-            <SignUp />
-          </Route>
-          <Route path="/gameInfos">
-            <GameInfos />
-          </Route>
-        </Switch>
-        <Footer />
-      </Router>
-    
-    </div>
+    <Provider store={store}>
+      <div>
+        <Router>
+          <NavBar />
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/sign-up">
+              <SignUp />
+            </Route>
+            <Route path="/gameInfos">
+              <GameInfos />
+            </Route>
+          </Switch>
+          <Footer />
+        </Router>
+      </div>
+    </Provider>
   );
 };
 
