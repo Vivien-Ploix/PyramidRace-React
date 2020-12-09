@@ -1,15 +1,12 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import Cookies from 'js-cookie'
-import { authSuccess } from '../../redux/authentication/authActions'
-import {useDispatch} from "react-redux"
-
+import Cookies from "js-cookie";
+import { authSuccess } from "../../redux/authentication/authActions";
+import { useDispatch } from "react-redux";
 
 const SignUp = () => {
-
-  const history = useHistory()
-  const dispatch = useDispatch()
-  var myForm = document.getElementById('signup-form')
+  const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleClickSignup = (e) => {
     e.preventDefault();
@@ -17,31 +14,33 @@ const SignUp = () => {
     let data = {
       user: {
         email: e.currentTarget.email.value,
-        pseudo:  e.currentTarget.pseudo.value,
-        password: e.currentTarget.password.value
-      }
-    }
-    fetch('https://pyramid-race-api.herokuapp.com/signup', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
+        pseudo: e.currentTarget.pseudo.value,
+        password: e.currentTarget.password.value,
       },
-      body: JSON.stringify(data)
+    };
+    fetch("https://pyramid-race-api.herokuapp.com/signup", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     })
-    .then((response) => {
-      for (var pair of response.headers.entries()) { // accessing the entries
-        if (pair[0] === "authorization") { // key I'm looking for in this instance
-        Cookies.set("token", pair[1])
+      .then((response) => {
+        for (var pair of response.headers.entries()) {
+          // accessing the entries
+          if (pair[0] === "authorization") {
+            // key I'm looking for in this instance
+            Cookies.set("token", pair[1]);
+          }
         }
-      }
-      return response.json()
-    })
-    .then((response) => {
-      dispatch(authSuccess(response))
-      history.push('/')
-    })
-    .catch((error) => console.log(error))
-  }
+        return response.json();
+      })
+      .then((response) => {
+        dispatch(authSuccess(response));
+        history.push("/");
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <div>
@@ -68,7 +67,11 @@ const SignUp = () => {
           <div class="row justify-content-center">
             <div class="col-lg-8">
               <div class="contact-form">
-                <form id="signup-form" method="post" onSubmit={handleClickSignup}>
+                <form
+                  id="signup-form"
+                  method="post"
+                  onSubmit={handleClickSignup}
+                >
                   <div class="row">
                     <div class="col-md-12">
                       <div class="single-form form-group">
