@@ -22,7 +22,7 @@ const FriendList = () => {
     <table cellpadding="0" cellspacing="0" border="0">
       <tbody>
         <tr>
-          <button>Jouer</button>
+          <button className= 'friendButton'>Jouer</button>
           <td>AUSTRALIAN COMPANY </td>
           
         </tr>
