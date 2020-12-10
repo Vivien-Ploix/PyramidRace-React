@@ -1,43 +1,44 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import Cookies from 'js-cookie'
-import { authSuccess } from '../../redux/authentication/authActions'
-import {useDispatch} from "react-redux"
+import Cookies from "js-cookie";
+import { authSuccess } from "../../redux/authentication/authActions";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
-
   const history = useHistory();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleClickLogin = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     let data = {
       user: {
         email: e.currentTarget.email.value,
-        password: e.currentTarget.password.value
-      }
-    }
-    fetch('https://pyramid-race-api.herokuapp.com/login', {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json'
+        password: e.currentTarget.password.value,
       },
-      body: JSON.stringify(data)
+    };
+    fetch("https://pyramid-race-api.herokuapp.com/login", {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     })
-    .then((response) => {
-      for (var pair of response.headers.entries()) { // accessing the entries
-        if (pair[0] === "authorization") { // key I'm looking for in this instance
-        Cookies.set("token", pair[1])
+      .then((response) => {
+        for (var pair of response.headers.entries()) {
+          // accessing the entries
+          if (pair[0] === "authorization") {
+            // key I'm looking for in this instance
+            Cookies.set("token", pair[1]);
+          }
         }
-      }
-      return response.json()
-    })
-    .then((response) => {
-      dispatch(authSuccess(response))
-      history.push('/')
-    })
-    .catch((error) => console.log(error))
-  }
+        return response.json();
+      })
+      .then((response) => {
+        dispatch(authSuccess(response));
+        history.push("/");
+      })
+      .catch((error) => console.log(error));
+  };
   return (
     <div>
       <section
@@ -51,8 +52,10 @@ const Login = () => {
               <div class="section-title text-center pb-10">
                 <h3 class="title">Se connecter</h3>
                 <p class="text">
-                  Avant de monter la pyramide il faut décliner ton identité ! Il
-                  serait regretable que ton nom n'entre pas dans l'histoire ...
+                  Avant d'escalader la pyramide, il faut décliner ton identité !
+                  <br></br>
+                  Il serait regrettable que ton nom n'entre pas dans l'histoire
+                  ...
                 </p>
               </div>
             </div>
@@ -60,7 +63,11 @@ const Login = () => {
           <div class="row justify-content-center">
             <div class="col-lg-8">
               <div class="contact-form">
-                <form id="contact-form" method="post" onSubmit={handleClickLogin}>
+                <form
+                  id="contact-form"
+                  method="post"
+                  onSubmit={handleClickLogin}
+                >
                   <div class="row">
                     <div class="col-md-12">
                       <div class="single-form form-group">
