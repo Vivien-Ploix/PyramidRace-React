@@ -1,18 +1,18 @@
-import React, {useEffect} from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import NavBar from "./Components/NavBar";
 import Home from "./Pages/Home";
 import Footer from "./Components/Footer/";
 import Login from "./Pages/Login";
+import GamePage from "./Pages/GamePage";
 import SignUp from "./Pages/Signup";
-import GameInfos from "./Pages/GameInfos"
+import GameInfos from "./Pages/GameInfos";
 import { Provider } from "react-redux";
-import { store, persistor } from './redux/store'
-import { PersistGate } from 'redux-persist/integration/react'
+import { store, persistor } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 const App = () => {
-
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
@@ -31,6 +31,9 @@ const App = () => {
               </Route>
               <Route path="/gameInfos">
                 <GameInfos />
+              </Route>
+              <Route path="/game">
+                <GamePage />
               </Route>
             </Switch>
             <Footer />

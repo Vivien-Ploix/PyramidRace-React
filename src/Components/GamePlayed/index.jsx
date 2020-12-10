@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./style.scss";
 
-const GamePlayed = ({ gameId, opponentId, winner_id }) => {
+const GamePlayed = ({ opponentId, winner_id }) => {
   const [opponent, setOpponent] = useState({});
   const getOpponentInfos = () => {
-    console.log(opponentId);
     fetch(`https://pyramid-race-api.herokuapp.com/users/${opponentId}`)
       .then((response) => response.json())
       .then((data) => {
@@ -18,11 +17,11 @@ const GamePlayed = ({ gameId, opponentId, winner_id }) => {
   }, []);
 
   return (
-    <div class="container card-game">
-      <div class="row align-middle">
-        <div class="col-md-8 col-lg-6 column">
-          <div class="card gr-1">
-            <div class="txt">
+    <div className="container card-game">
+      <div className="row align-middle">
+        <div className="col-md-8 col-lg-6 column">
+          <div className="card gr-1">
+            <div className="txt">
               {winner_id != opponentId && winner_id != null && (
                 <div>
                   <h1>Victoire</h1>
@@ -51,8 +50,8 @@ const GamePlayed = ({ gameId, opponentId, winner_id }) => {
               <small>Adversaire : {opponent.pseudo}</small>
             </div>
             <a href="#">Rejouer ?</a>
-            <div class="ico-card">
-              <i class="lni lni-pyramids"></i>
+            <div className="ico-card">
+              <i className="lni lni-pyramids"></i>
             </div>
           </div>
         </div>

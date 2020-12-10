@@ -46,15 +46,15 @@ const SignUp = () => {
     <div>
       <section
         id="contact"
-        class="contact-area"
+        className="contact-area"
         style={{ marginBottom: "50px", marginTop: "50px" }}
       >
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-6">
-              <div class="section-title text-center pb-10">
-                <h3 class="title">Inscription</h3>
-                <p class="text">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-6">
+              <div className="section-title text-center pb-10">
+                <h3 className="title">Inscription</h3>
+                <p className="text">
                   Tu es brave et courageux, si tu es ici c'est que tu veux
                   tenter l'aventure et atteindre le sommet de la Pyramid Race !
                 </p>
@@ -64,17 +64,17 @@ const SignUp = () => {
               </div>
             </div>
           </div>
-          <div class="row justify-content-center">
-            <div class="col-lg-8">
-              <div class="contact-form">
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div className="contact-form">
                 <form
                   id="signup-form"
                   method="post"
                   onSubmit={handleClickSignup}
                 >
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="single-form form-group">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="single-form form-group">
                         <input
                           type="email"
                           name="email"
@@ -82,8 +82,8 @@ const SignUp = () => {
                         ></input>
                       </div>
                     </div>
-                    <div class="col-md-12">
-                      <div class="single-form form-group">
+                    <div className="col-md-12">
+                      <div className="single-form form-group">
                         <input
                           type="text"
                           name="pseudo"
@@ -92,8 +92,8 @@ const SignUp = () => {
                       </div>
                     </div>
 
-                    <div class="col-md-12">
-                      <div class="single-form form-group">
+                    <div className="col-md-12">
+                      <div className="single-form form-group">
                         <input
                           placeholder="Tape ton mot de passe"
                           type="password"
@@ -102,15 +102,16 @@ const SignUp = () => {
                       </div>
                     </div>
 
-                    <div class="col-md-12">
-                      <div class="single-form form-group text-center">
-                        <button type="submit" class="main-btn">
+                    <div className="col-md-12">
+                      <div className="single-form form-group text-center">
+                        <button type="submit" className="main-btn">
                           M'inscrire
                         </button>
                       </div>
                     </div>
                     <img
                       src="/assets/images/aztequesign.png"
+                      alt="azteque"
                       style={{ marginTop: "50px" }}
                     ></img>
                   </div>

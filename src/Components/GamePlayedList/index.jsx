@@ -6,30 +6,31 @@ import "./style.scss";
 
 const GamePlayedList = () => {
   const userId = useSelector((state) => state.id);
-  const [opponentId, setOpponentId] = useState("");
   const [gamesPlayed, setGamesPlayed] = useState([]);
   const [playerStats, setPlayerStats] = useState({});
+  const [gamesPlayedStats, setGamesPlayedStats] = useState([]);
 
   const fetchGamesPlayed = () => {
     fetch(`https://pyramid-race-api.herokuapp.com/users/${userId}/games`)
       .then((response) => response.json())
       .then((data) => {
-        setGamesPlayed(data);
-        console.log(data);
+        setGamesPlayedStats(data);
+        let slicedData = data.slice(0, 10);
+        setGamesPlayed(slicedData);
       })
-      .catch((error) => alert(error));
+      .catch((error) => console.log(error));
   };
 
   useEffect(() => {
     fetchGamesPlayed();
-    console.log(userId);
   }, []);
 
   useEffect(() => {
     let player_stats = {
-      games_played: gamesPlayed.length,
-      games_won: gamesPlayed.filter((game) => game.winner_id == userId).length,
-      games_lost: gamesPlayed.filter(
+      games_played: gamesPlayedStats.length,
+      games_won: gamesPlayedStats.filter((game) => game.winner_id == userId)
+        .length,
+      games_lost: gamesPlayedStats.filter(
         (game) => game.winner_id != userId && game.winner_id != null
       ).length,
     };
@@ -47,6 +48,7 @@ const GamePlayedList = () => {
                   gameId={game.id}
                   opponentId={game.player2_id}
                   winner_id={game.winner_id}
+                  key={game.id}
                 />
               );
             } else {
@@ -55,6 +57,7 @@ const GamePlayedList = () => {
                   gameId={game.id}
                   opponentId={game.player1_id}
                   winner_id={game.winner_id}
+                  key={game.id}
                 />
               );
             }

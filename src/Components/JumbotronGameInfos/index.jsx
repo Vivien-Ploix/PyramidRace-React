@@ -1,7 +1,10 @@
 import React from "react";
 import SearchBar from "../SearchBar";
+import { useSelector } from "react-redux";
 
 const JumbotronGameInfos = () => {
+  const userPseudo = useSelector((state) => state.attributes.pseudo);
+
   return (
     <div
       id="home"
@@ -12,7 +15,7 @@ const JumbotronGameInfos = () => {
         <div className="row justify-content-center">
           <div className="col-xl-8 col-lg-10">
             <div className="header-content text-center">
-              <h3 className="header-title">Bonjour Anthony</h3>
+              <h3 className="header-title">Bonjour {userPseudo}</h3>
               <br></br>
               <h4>Bienvenue sur ta page d'information</h4>
               <p className="text">
