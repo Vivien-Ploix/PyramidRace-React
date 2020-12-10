@@ -1,49 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.scss";
 import { useSelector } from "react-redux";
+import Cookie from "js-cookie";
+import { useHistory } from "react-router-dom";
+import PlayerSuggestion from "./../PlayerSuggestion";
 
 const SearchBar = () => {
   const [input, setInput] = useState("");
   const userId = useSelector((state) => state.id);
+  const tokenCookie = Cookie.get("token");
+  const history = useHistory();
+  const [suggestions, setSuggestions] = useState([]);
 
   const handleInputChange = (e) => {
-    if (e.currentTarget.value.length >= 2) {
-      setInput(e.currentTarget.value);
-      autoCompleteSearch(input);
+    const { value } = e.currentTarget;
+    setInput(value.replace(/\s/, ""));
+  };
+
+  useEffect(() => {
+    if (input.length >= 3) {
+      fetch(`https://pyramid-race-api.herokuapp.com/users?pseudo=${input}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setSuggestions(data || []);
+        });
     } else {
-      setInput("");
-      let suggestions = document.querySelector(".suggestions");
-      suggestions.innerHTML = "";
+      setSuggestions([]);
     }
-  };
-
-  const autoCompleteSearch = (input) => {
-    let suggestions = document.querySelector(".suggestions");
-    let suggestedJobs = "";
-
-    fetch(`https://pyramid-race-api.herokuapp.com/users?pseudo=${input}`)
-      .then((response) => response.json())
-      .then((data) => {
-        if (Array.isArray(data)) {
-          let slicedData = data.slice(0, 10);
-          slicedData.forEach((result) => {
-            if (result.id != userId) {
-              console.log(result.id);
-              suggestedJobs += `
-              <div class="suggestion"><p>${result.pseudo} <button class="play-button">Jouer</button></p></div>
-            `;
-            }
-          });
-          suggestions.innerHTML = suggestedJobs;
-        } else {
-          suggestions.innerHTML = "";
-        }
-      });
-  };
+  }, [input]);
 
   const closeSearch = () => {
-    let suggestions = document.querySelector(".suggestions");
-    suggestions.innerHTML = "";
+    setSuggestions([]);
+  };
+
+  const startGame = (opponentId) => {
+    const data = {
+      game: {
+        player1_id: userId,
+        player2_id: opponentId,
+        difficulty: "medium",
+      },
+    };
+
+    fetch(`https://pyramid-race-api.herokuapp.com/games`, {
+      method: "post",
+      headers: {
+        Authorization: `${tokenCookie}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((response) => {
+      history.push("/");
+    });
   };
 
   return (
@@ -52,9 +60,19 @@ const SearchBar = () => {
         type="text"
         placeholder="Chercher un joueur"
         onChange={handleInputChange}
-      ></input>
+        value={input}
+      />
       <div class="search" onClick={closeSearch}></div>
-      <div className="suggestions"></div>
+      <div className="suggestions">
+        {suggestions.map((suggestion) => (
+          <PlayerSuggestion
+            pseudo={suggestion.pseudo}
+            onClick={() => {
+              startGame(suggestion.id);
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 };

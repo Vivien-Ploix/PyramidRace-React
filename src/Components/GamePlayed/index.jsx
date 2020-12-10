@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./style.scss";
 
-const GamePlayed = ({ gameId, opponentId, winner_id }) => {
+const GamePlayed = ({ opponentId, winner_id }) => {
   const [opponent, setOpponent] = useState({});
   const getOpponentInfos = () => {
     console.log(opponentId);

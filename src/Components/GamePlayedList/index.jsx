@@ -8,12 +8,15 @@ const GamePlayedList = () => {
   const userId = useSelector((state) => state.id);
   const [gamesPlayed, setGamesPlayed] = useState([]);
   const [playerStats, setPlayerStats] = useState({});
+  const [gamesPlayedStats, setGamesPlayedStats] = useState([]);
 
   const fetchGamesPlayed = () => {
     fetch(`https://pyramid-race-api.herokuapp.com/users/${userId}/games`)
       .then((response) => response.json())
       .then((data) => {
-        setGamesPlayed(data);
+        setGamesPlayedStats(data);
+        let slicedData = data.slice(0, 10);
+        setGamesPlayed(slicedData);
         console.log(data);
       })
       .catch((error) => alert(error));
@@ -26,9 +29,10 @@ const GamePlayedList = () => {
 
   useEffect(() => {
     let player_stats = {
-      games_played: gamesPlayed.length,
-      games_won: gamesPlayed.filter((game) => game.winner_id == userId).length,
-      games_lost: gamesPlayed.filter(
+      games_played: gamesPlayedStats.length,
+      games_won: gamesPlayedStats.filter((game) => game.winner_id == userId)
+        .length,
+      games_lost: gamesPlayedStats.filter(
         (game) => game.winner_id != userId && game.winner_id != null
       ).length,
     };
