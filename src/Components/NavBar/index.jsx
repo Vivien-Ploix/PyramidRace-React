@@ -81,7 +81,7 @@ const NavBar = () => {
                   {!tokenCookie && (
                     <>
                       <li className="nav-item">
-                        <Link to="/sign-up">S'incrire</Link>
+                        <Link to="/sign-up">S'inscrire</Link>
                       </li>
                       <li className="nav-item">
                         <Link to="/login">Se connecter</Link>

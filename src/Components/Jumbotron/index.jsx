@@ -24,7 +24,7 @@ const Jumbotron = () => {
               <ul className="header-btn">
                 <li>
                   <Link to="/sign-up" className="main-btn btn-one">
-                    Je veux jouer
+                    Je veux jouer, caramba !
                   </Link>
                 </li>
               </ul>
