@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./style.scss";
+import { useSelector } from "react-redux";
 
 const SearchBar = () => {
   const [input, setInput] = useState("");
+  const userId = useSelector((state) => state.id);
 
   const handleInputChange = (e) => {
     if (e.currentTarget.value.length >= 2) {
@@ -18,7 +20,6 @@ const SearchBar = () => {
   const autoCompleteSearch = (input) => {
     let suggestions = document.querySelector(".suggestions");
     let suggestedJobs = "";
-    console.log(suggestions);
 
     fetch(`https://pyramid-race-api.herokuapp.com/users?pseudo=${input}`)
       .then((response) => response.json())
@@ -26,10 +27,12 @@ const SearchBar = () => {
         if (Array.isArray(data)) {
           let slicedData = data.slice(0, 10);
           slicedData.forEach((result) => {
-            console.log(result);
-            suggestedJobs += `
-        <div class="suggestion"><p>${result.pseudo} <button class="play-button">Jouer</button></p></div>
-        `;
+            if (result.id != userId) {
+              console.log(result.id);
+              suggestedJobs += `
+              <div class="suggestion"><p>${result.pseudo} <button class="play-button">Jouer</button></p></div>
+            `;
+            }
           });
           suggestions.innerHTML = suggestedJobs;
         } else {

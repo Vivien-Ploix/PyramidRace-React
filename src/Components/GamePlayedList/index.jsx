@@ -6,7 +6,6 @@ import "./style.scss";
 
 const GamePlayedList = () => {
   const userId = useSelector((state) => state.id);
-  const [opponentId, setOpponentId] = useState("");
   const [gamesPlayed, setGamesPlayed] = useState([]);
   const [playerStats, setPlayerStats] = useState({});
 
