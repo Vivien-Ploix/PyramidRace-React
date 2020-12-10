@@ -17,14 +17,12 @@ const GamePlayedList = () => {
         setGamesPlayedStats(data);
         let slicedData = data.slice(0, 10);
         setGamesPlayed(slicedData);
-        console.log(data);
       })
-      .catch((error) => alert(error));
+      .catch((error) => console.log(error));
   };
 
   useEffect(() => {
     fetchGamesPlayed();
-    console.log(userId);
   }, []);
 
   useEffect(() => {
@@ -50,6 +48,7 @@ const GamePlayedList = () => {
                   gameId={game.id}
                   opponentId={game.player2_id}
                   winner_id={game.winner_id}
+                  key={game.id}
                 />
               );
             } else {
@@ -58,6 +57,7 @@ const GamePlayedList = () => {
                   gameId={game.id}
                   opponentId={game.player1_id}
                   winner_id={game.winner_id}
+                  key={game.id}
                 />
               );
             }

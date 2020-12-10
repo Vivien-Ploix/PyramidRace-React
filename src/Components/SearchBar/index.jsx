@@ -55,14 +55,14 @@ const SearchBar = () => {
   };
 
   return (
-    <div class="container searchbar navbar-form">
+    <div className="container searchbar navbar-form">
       <input
         type="text"
         placeholder="Chercher un joueur"
         onChange={handleInputChange}
         value={input}
       />
-      <div class="search" onClick={closeSearch}></div>
+      <div className="search" onClick={closeSearch}></div>
       <div className="suggestions">
         {suggestions.map((suggestion) => (
           <PlayerSuggestion

@@ -7,7 +7,7 @@ const FriendList = () => {
       <h4>
         <b>Tes amis</b>
       </h4>
-      <div class="tbl-header">
+      <div className="tbl-header">
         <table cellpadding="0" cellspacing="0" border="0">
           <thead>
             <tr>
@@ -17,7 +17,7 @@ const FriendList = () => {
           </thead>
         </table>
       </div>
-      <div class="tbl-content">
+      <div className="tbl-content">
         <table cellpadding="0" cellspacing="0" border="0">
           <tbody>
             <tr>

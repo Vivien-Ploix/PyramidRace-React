@@ -2,13 +2,13 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer id="footer" class="footer-area">
-      <div class="footer-copyright">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-12">
-              <div class="copyright text-center">
-                <p class="text">
+    <footer id="footer" className="footer-area">
+      <div className="footer-copyright">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="copyright text-center">
+                <p className="text">
                   THP Project by Anthony KRIEF, Vivien PLOIX et Olivier FITOUSSI
                 </p>
               </div>

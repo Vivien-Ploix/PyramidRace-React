@@ -1,7 +1,54 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Cookie from "js-cookie";
+import { useHistory } from "react-router-dom";
 
 const Jumbotron = () => {
+  const userId = useSelector((state) => state.id);
+  const tokenCookie = Cookie.get("token");
+  const history = useHistory();
+  const [possibleOpponents, setPossibleOpponents] = useState([]);
+
+  const fetchPossibleOpponents = () => {
+    fetch(`https://pyramid-race-api.herokuapp.com/users`)
+      .then((response) => response.json())
+      .then((data) => {
+        setPossibleOpponents(
+          data.filter((user) => user.id !== parseInt(userId))
+        );
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    fetchPossibleOpponents();
+  }, []);
+
+  const startGame = () => {
+    const data = {
+      game: {
+        player1_id: userId,
+        player2_id:
+          possibleOpponents[
+            Math.floor(Math.random() * possibleOpponents.length)
+          ].id,
+        difficulty: "medium",
+      },
+    };
+
+    fetch(`https://pyramid-race-api.herokuapp.com/games`, {
+      method: "post",
+      headers: {
+        Authorization: `${tokenCookie}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((response) => {
+      history.push("/");
+    });
+  };
+
   return (
     <div
       id="home"
@@ -22,11 +69,24 @@ const Jumbotron = () => {
                 transformes en burrito avarié !
               </p>
               <ul className="header-btn">
-                <li>
-                  <Link to="/sign-up" className="main-btn btn-one">
-                    Je veux jouer
-                  </Link>
-                </li>
+                {userId === null && (
+                  <li>
+                    <Link to="/sign-up" className="main-btn btn-one">
+                      Je veux jouer
+                    </Link>
+                  </li>
+                )}
+                {userId !== null && (
+                  <li>
+                    <Link
+                      to="/"
+                      className="main-btn btn-one"
+                      onClick={startGame}
+                    >
+                      Je veux jouer
+                    </Link>
+                  </li>
+                )}
               </ul>
             </div>
           </div>

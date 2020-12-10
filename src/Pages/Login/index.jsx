@@ -43,15 +43,15 @@ const Login = () => {
     <div>
       <section
         id="contact"
-        class="contact-area"
+        className="contact-area"
         style={{ marginBottom: "50px", marginTop: "50px" }}
       >
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-6">
-              <div class="section-title text-center pb-10">
-                <h3 class="title">Se connecter</h3>
-                <p class="text">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="col-lg-6">
+              <div className="section-title text-center pb-10">
+                <h3 className="title">Se connecter</h3>
+                <p className="text">
                   Avant d'escalader la pyramide, il faut décliner ton identité !
                   <br></br>
                   Il serait regrettable que ton nom n'entre pas dans l'histoire
@@ -60,17 +60,17 @@ const Login = () => {
               </div>
             </div>
           </div>
-          <div class="row justify-content-center">
-            <div class="col-lg-8">
-              <div class="contact-form">
+          <div className="row justify-content-center">
+            <div className="col-lg-8">
+              <div className="contact-form">
                 <form
                   id="contact-form"
                   method="post"
                   onSubmit={handleClickLogin}
                 >
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="single-form form-group">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="single-form form-group">
                         <input
                           type="email"
                           name="email"
@@ -79,8 +79,8 @@ const Login = () => {
                       </div>
                     </div>
 
-                    <div class="col-md-12">
-                      <div class="single-form form-group">
+                    <div className="col-md-12">
+                      <div className="single-form form-group">
                         <input
                           placeholder="Tape ton mot de passe (idem)"
                           type="password"
@@ -89,15 +89,16 @@ const Login = () => {
                       </div>
                     </div>
 
-                    <div class="col-md-12">
-                      <div class="single-form form-group text-center">
-                        <button type="submit" class="main-btn">
+                    <div className="col-md-12">
+                      <div className="single-form form-group text-center">
+                        <button type="submit" className="main-btn">
                           Me connecter
                         </button>
                       </div>
                     </div>
                     <img
                       src="/assets/images/aztequelog.png"
+                      alt="aztequelog"
                       style={{ marginTop: "100px" }}
                     ></img>
                   </div>
