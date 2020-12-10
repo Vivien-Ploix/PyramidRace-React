@@ -8,12 +8,21 @@ import GamePlayedList from "../../Components/GamePlayedList";
 
 const GameInfos = () => {
   return (
+<<<<<<< HEAD
     <div>
       <JumbotronGameInfos />
       <div className="GameInfoContainer">
         <GamePlayedList />
         <PlayerInfos />
         <FriendList />
+=======
+    <div className ='GameInfo-div'>
+      <JumbotronGameInfos/>
+      <div className= 'GameInfoContainer'>
+      <GamePlayed />
+      <PlayerInfos/>
+      <FriendList/>
+>>>>>>> develop
       </div>
     </div>
   );

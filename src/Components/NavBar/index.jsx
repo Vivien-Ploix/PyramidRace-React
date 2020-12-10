@@ -95,7 +95,10 @@ const NavBar = () => {
                 <span>NOS RESEAUX</span>
                 <ul>
                   <li>
-                    <a href="https://www.facebook.com/PyramidRace" target="_blank">
+                    <a
+                      href="https://www.facebook.com/PyramidRace"
+                      target="_blank"
+                    >
                       {" "}
                       <i className="lni-facebook-filled"></i>
                     </a>
@@ -107,7 +110,10 @@ const NavBar = () => {
                     </a>
                   </li>
                   <li>
-                    <a href="https://www.instagram.com/pyramid.race/" target="_blank">
+                    <a
+                      href="https://www.instagram.com/pyramid.race/"
+                      target="_blank"
+                    >
                       {" "}
                       <i className="lni-instagram-original"></i>
                     </a>
