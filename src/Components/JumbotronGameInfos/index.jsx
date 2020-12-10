@@ -17,7 +17,7 @@ const JumbotronGameInfos = () => {
               <h4>Bienvenue sur ta page d'information</h4>
               <p className="text">
                 C'est ici que tu peux consulter tes statistiques (ne déprime pas
-                en voyant ton niveau), ajouter des amis et lancer une nouvelle
+                en voyant ton niveau), trouve tes amis et lance une nouvelle
                 partie !<br></br>
                 Que la Pyramid Race Commence !
               </p>
