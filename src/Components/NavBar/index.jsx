@@ -118,12 +118,6 @@ const NavBar = () => {
                       <i className="lni-instagram-original"></i>
                     </a>
                   </li>
-                  <li>
-                    <a href="#" target="_blank">
-                      {" "}
-                      <i className="lni-linkedin-original"></i>
-                    </a>
-                  </li>
                 </ul>
               </div>
             </nav>

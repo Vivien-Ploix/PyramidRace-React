@@ -7,11 +7,14 @@ const HomeSection = () => {
         <div className="row">
           <div className="col-lg-6">
             <div className="section-title pb-10">
-              <h4 className="title">Pyramid Race !</h4>
+              <h4 className="title">
+                Pyramid <em>Race</em> !
+              </h4>
               <p className="text">
-                En jouant à ce jeu tu amélioreras ta culture générale et tu
-                pourras humulier tes amis en montrant que c'est bien toi qui te
-                tiens au sommet de la pyramide !
+                En jouant à ce jeu, tu amélioreras ta culture générale et tu
+                pourras humilier des inconnus, ou mêmes tes (futurs-ex) amis, en
+                montrant que c'est bien toi qui te trouves au sommet de la
+                pyramide !
               </p>
             </div>
           </div>
@@ -27,7 +30,8 @@ const HomeSection = () => {
                   <div className="services-content media-body">
                     <h4 className="services-title">Rapidité</h4>
                     <p className="text">
-                      Tu as 10 secondes pour répondre aux questions !
+                      Tu as 10 secondes pour répondre à chaque question. Plus tu
+                      réponds vite, plus tu cumules des points bonus !
                     </p>
                   </div>
                 </div>
@@ -40,8 +44,8 @@ const HomeSection = () => {
                   <div className="services-content media-body">
                     <h4 className="services-title">Fun</h4>
                     <p className="text">
-                      Tu verras c'est amusant même si tu restes aux pieds de la
-                      pyramide (en gros meme si t'es nul)
+                      Tu verras, c'est amusant même si tu restes au pied de la
+                      pyramide (en gros, même si t'es nul...)
                     </p>
                   </div>
                 </div>
@@ -54,8 +58,8 @@ const HomeSection = () => {
                   <div className="services-content media-body">
                     <h4 className="services-title">Rang</h4>
                     <p className="text">
-                      Plus tu gagnes plus ton niveau augmente, plus tu affrontes
-                      de redoutables adveraires !
+                      Plus tu gagnes de parties, plus ton niveau augmente, plus
+                      tu affrontes de redoutables adversaires !
                     </p>
                   </div>
                 </div>
@@ -66,9 +70,10 @@ const HomeSection = () => {
                     <i className="lni lni-network"></i>
                   </div>
                   <div className="services-content media-body">
-                    <h4 className="services-title">A plusieurs !</h4>
+                    <h4 className="services-title">Seul ou entre amis !</h4>
                     <p className="text">
-                      Invite tes amis et montre leur qui est le boss !
+                      Invite tes potes et montre leur que tu n'es pas un second
+                      couteau aztèque !
                     </p>
                   </div>
                 </div>
