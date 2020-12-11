@@ -5,11 +5,14 @@ import "./style.scss";
 const Game = () => {
   let { id } = useParams();
   const [game, setGame] = useState({});
+  const [questions, setQuestions] = useState([]);
+  const [count, setCount] = useState(0);
 
   const fetchGame = () => {
     fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`)
       .then((response) => response.json())
-      .then((data) => setGame(data));
+      .then((data) => setGame(data))
+      .catch((error) => console.log(error));
   };
 
   useEffect(() => {
@@ -17,13 +20,26 @@ const Game = () => {
   }, []);
 
   useEffect(() => {
+    console.log(questions);
+  }, [questions]);
+
+  useEffect(() => {
+    setCount(count + 1);
     console.log(game);
+    console.log(game.category);
+    console.log(game.difficulty);
+    if (count === 1) {
+      fetchQuestions();
+      console.log("test");
+    }
   }, [game]);
 
   const fetchQuestions = () => {
     fetch(
-      `https://opentdb.com/api.php?amount=12&difficulty=${game.difficulty}&category=${game.category}`
-    );
+      `https://opentdb.com/api.php?amount=12&category=${game.category}&difficulty=${game.difficulty}&type=multiple`
+    )
+      .then((response) => response.json())
+      .then((data) => setQuestions(data));
   };
 
   return (

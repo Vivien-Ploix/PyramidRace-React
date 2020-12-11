@@ -9,6 +9,27 @@ const Jumbotron = () => {
   const tokenCookie = Cookie.get("token");
   const history = useHistory();
   const [possibleOpponents, setPossibleOpponents] = useState([]);
+  const categoriesArray = [
+    9,
+    10,
+    11,
+    12,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    21,
+    22,
+    23,
+    24,
+    26,
+    27,
+    28,
+    31,
+    32,
+  ];
 
   const fetchPossibleOpponents = () => {
     fetch(`https://pyramid-race-api.herokuapp.com/users`)
@@ -34,7 +55,8 @@ const Jumbotron = () => {
             Math.floor(Math.random() * possibleOpponents.length)
           ].id,
         difficulty: "medium",
-        category: Math.floor(Math.random() * (33 - 9) + 9),
+        category:
+          categoriesArray[Math.floor(Math.random() * categoriesArray.length)],
       },
     };
 

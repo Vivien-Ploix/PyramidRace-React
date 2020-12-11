@@ -11,6 +11,27 @@ const SearchBar = () => {
   const tokenCookie = Cookie.get("token");
   const history = useHistory();
   const [suggestions, setSuggestions] = useState([]);
+  const categoriesArray = [
+    9,
+    10,
+    11,
+    12,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    21,
+    22,
+    23,
+    24,
+    26,
+    27,
+    28,
+    31,
+    32,
+  ];
 
   const handleInputChange = (e) => {
     const { value } = e.currentTarget;
@@ -39,7 +60,8 @@ const SearchBar = () => {
         player1_id: userId,
         player2_id: opponentId,
         difficulty: "medium",
-        category: Math.floor(Math.random() * (33 - 9) + 9),
+        category:
+          categoriesArray[Math.floor(Math.random() * categoriesArray.length)],
       },
     };
 
