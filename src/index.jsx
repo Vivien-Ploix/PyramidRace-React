@@ -32,7 +32,7 @@ const App = () => {
               <Route path="/gameInfos">
                 <GameInfos />
               </Route>
-              <Route path="/game">
+              <Route path="/game/:id">
                 <GamePage />
               </Route>
             </Switch>

@@ -39,6 +39,7 @@ const SearchBar = () => {
         player1_id: userId,
         player2_id: opponentId,
         difficulty: "medium",
+        category: Math.floor(Math.random() * (33 - 9) + 9),
       },
     };
 
@@ -49,9 +50,11 @@ const SearchBar = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((response) => {
-      history.push("/");
-    });
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        history.push(`/game/${response.id}`);
+      });
   };
 
   return (

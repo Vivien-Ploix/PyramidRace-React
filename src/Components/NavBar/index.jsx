@@ -37,7 +37,7 @@ const NavBar = () => {
           <div className="col-lg-12">
             <nav className="navbar navbar-expand-lg">
               <Link to="/">
-                <img src="assets/images/logo.svg" alt="Logo"></img>
+                <img src="/assets/images/logo.svg" alt="Logo"></img>
               </Link>
               <button
                 className="navbar-toggler"

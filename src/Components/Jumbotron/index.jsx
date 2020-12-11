@@ -34,6 +34,7 @@ const Jumbotron = () => {
             Math.floor(Math.random() * possibleOpponents.length)
           ].id,
         difficulty: "medium",
+        category: Math.floor(Math.random() * (33 - 9) + 9),
       },
     };
 
@@ -44,9 +45,12 @@ const Jumbotron = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((response) => {
-      history.push("/");
-    });
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        history.push(`/game/${response.id}`);
+      });
   };
 
   return (
