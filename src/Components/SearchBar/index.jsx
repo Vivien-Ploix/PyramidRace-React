@@ -12,6 +12,13 @@ const SearchBar = () => {
   const history = useHistory();
   const [suggestions, setSuggestions] = useState([]);
 
+  //Enables selecting the range of categories in the API and excluding the ones not containing enough questions
+  const arrayQuestions = [...Array(32 - 9 + 1)].map((item, index) => 9 + index);
+  const categoriesToBeRemoved = [13, 20, 25, 29, 30];
+  const categoriesArray = arrayQuestions.filter(
+    (item) => !categoriesToBeRemoved.includes(item)
+  );
+
   const handleInputChange = (e) => {
     const { value } = e.currentTarget;
     setInput(value.replace(/\s/, ""));
@@ -39,6 +46,8 @@ const SearchBar = () => {
         player1_id: userId,
         player2_id: opponentId,
         difficulty: "medium",
+        category:
+          categoriesArray[Math.floor(Math.random() * categoriesArray.length)],
       },
     };
 
@@ -49,9 +58,11 @@ const SearchBar = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((response) => {
-      history.push("/");
-    });
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        history.push(`/game/${response.id}`);
+      });
   };
 
   return (
