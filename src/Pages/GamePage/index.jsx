@@ -25,12 +25,8 @@ const Game = () => {
 
   useEffect(() => {
     setCount(count + 1);
-    console.log(game);
-    console.log(game.category);
-    console.log(game.difficulty);
     if (count === 1) {
       fetchQuestions();
-      console.log("test");
     }
   }, [game]);
 
@@ -39,7 +35,7 @@ const Game = () => {
       `https://opentdb.com/api.php?amount=12&category=${game.category}&difficulty=${game.difficulty}&type=multiple`
     )
       .then((response) => response.json())
-      .then((data) => setQuestions(data));
+      .then((data) => setQuestions(data.results));
   };
 
   return (

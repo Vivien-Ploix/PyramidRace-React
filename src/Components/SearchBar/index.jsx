@@ -11,27 +11,13 @@ const SearchBar = () => {
   const tokenCookie = Cookie.get("token");
   const history = useHistory();
   const [suggestions, setSuggestions] = useState([]);
-  const categoriesArray = [
-    9,
-    10,
-    11,
-    12,
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    21,
-    22,
-    23,
-    24,
-    26,
-    27,
-    28,
-    31,
-    32,
-  ];
+
+  //Enables selecting the range of categories in the API and excluding the ones not containing enough questions
+  const arrayQuestions = [...Array(32 - 9 + 1)].map((item, index) => 9 + index);
+  const categoriesToBeRemoved = [13, 20, 25, 29, 30];
+  const categoriesArray = arrayQuestions.filter(
+    (item) => !categoriesToBeRemoved.includes(item)
+  );
 
   const handleInputChange = (e) => {
     const { value } = e.currentTarget;
