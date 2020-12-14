@@ -75,14 +75,18 @@ const SearchBar = () => {
       />
       <div className="search" onClick={closeSearch}></div>
       <div className="suggestions">
-        {suggestions.map((suggestion) => (
-          <PlayerSuggestion
-            pseudo={suggestion.pseudo}
-            onClick={() => {
-              startGame(suggestion.id);
-            }}
-          />
-        ))}
+        {suggestions.map((suggestion) => {
+          if (suggestion.id != userId) {
+            return (
+              <PlayerSuggestion
+                pseudo={suggestion.pseudo}
+                onClick={() => {
+                  startGame(suggestion.id);
+                }}
+              />
+            );
+          }
+        })}
       </div>
     </div>
   );
