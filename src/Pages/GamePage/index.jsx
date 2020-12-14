@@ -17,8 +17,8 @@ const Game = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState({});
   const [gameOn, setGameOn] = useState(false);
-  const [counter, setCounter] = useState(10);
   const [newQuestionTime, setNewQuestionTime] = useState(new Date(Date.now()))
+  const [currentStep, setCurrentStep] = useState(0)
 
   useEffect(() => {
     console.log(questions);
@@ -80,15 +80,24 @@ const Game = () => {
       body: JSON.stringify(data),
     }).then((response) => response.json());
 
+    if (answer_choice === correct_answer && currentStep < 5) {
+      setCurrentStep += 1
+    } else if (answer_choice === correct_answer && currentStep === 5) {
+      setCurrentStep += 1
+      
+    } else if (answer_choice !== correct_answer && currentStep > 0) {
+      setCurrentStep -= 1
+    }
+
     if (currentQuestionIndex < 12) {
       setCurrentQuestion(questions[currentQuestionIndex]);
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setCounter(10);
       setNewQuestionTime(new Date(Date.now()))
     } else {
       setGameOn(false);
       setCurrentQuestion({});
       setCurrentQuestionIndex("");
+
     }
   };
 

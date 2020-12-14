@@ -4,7 +4,7 @@ import { useCountdownTimer } from 'use-countdown-timer';
  
 const Countdown = ({ onExpire, resetTick }) => {
   const { countdown, reset, start } = useCountdownTimer({
-    timer: 1000 * 5,
+    timer: 1000 * 10,
     autostart: true,
     onExpire
   });
