@@ -50,7 +50,6 @@ const GamePlayedList = () => {
       ).length,
     };
     setPlayerStats(player_stats);
-    console.log(gamesPlayed);
   }, [gamesPlayed]);
 
   return (

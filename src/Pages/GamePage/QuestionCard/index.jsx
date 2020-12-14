@@ -45,7 +45,7 @@ const QuestionCard = ({
                     className="answer-button"
                     onClick = {() => nextQuestion(choice, correct_answer)}
                   >
-                    {choice}
+                    <span dangerouslySetInnerHTML={{__html:choice}}/>
                   </button>
                 );
               })}
