@@ -4,10 +4,8 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Cookie from "js-cookie";
 import QuestionCard from "./QuestionCard";
-import Countdown from "./Countdown/test2";
 import Pyramid from "./assets/pyramid.png";
-import CountdownTimer from "./Countdown/index";
-import Example from './Countdown/test3'
+import Countdown from './Countdown/index'
 
 const Game = () => {
   let { id } = useParams();
@@ -20,6 +18,7 @@ const Game = () => {
   const [currentQuestion, setCurrentQuestion] = useState({});
   const [gameOn, setGameOn] = useState(false);
   const [counter, setCounter] = useState(10);
+  const [newQuestionTime, setNewQuestionTime] = useState(new Date(Date.now()))
 
   useEffect(() => {
     console.log(questions);
@@ -34,6 +33,10 @@ const Game = () => {
   useEffect(() => {
     fetchGame();
   }, []);
+
+  useEffect(() => {
+    console.log(newQuestionTime)
+  }, [newQuestionTime])
 
   useEffect(() => {
     setCount(count + 1);
@@ -64,6 +67,8 @@ const Game = () => {
         game_id: id,
         response_correct:
           (!!answer_choice && !!correct_answer && answer_choice === correct_answer),
+        question_time: newQuestionTime,
+        response_time: new Date(Date.now())
       },
     };
     fetch(`https://pyramid-race-api.herokuapp.com/game_histories`, {
@@ -79,6 +84,7 @@ const Game = () => {
       setCurrentQuestion(questions[currentQuestionIndex]);
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setCounter(10);
+      setNewQuestionTime(new Date(Date.now()))
     } else {
       setGameOn(false);
       setCurrentQuestion({});
@@ -86,13 +92,11 @@ const Game = () => {
     }
   };
 
-
-
   return (
     <div className="game_page">
       {gameOn && (
         <>
-          <Example onExpire={nextQuestion} resetTick={currentQuestionIndex}/>
+          <Countdown onExpire={nextQuestion} resetTick={currentQuestionIndex}/>
           <QuestionCard
             question={currentQuestion.question}
             correct_answer={currentQuestion.correct_answer}

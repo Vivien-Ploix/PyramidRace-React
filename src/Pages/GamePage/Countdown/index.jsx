@@ -1,25 +1,27 @@
-import React from "react";
-import Countdown from "react-countdown";
+import React, { useEffect } from 'react';
+ 
+import { useCountdownTimer } from 'use-countdown-timer';
+ 
+const Countdown = ({ onExpire, resetTick }) => {
+  const { countdown, reset, start } = useCountdownTimer({
+    timer: 1000 * 5,
+    autostart: true,
+    onExpire
+  });
 
-const CountdownTimer = ({ nextQuestion }) => {
-  const Completionist = () => {
-    nextQuestion()
-    return <p>test</p>
-  };
-
-  // Renderer callback with condition
-  const renderer = ({ seconds, completed }) => {
-    if (completed) {
-      // Render a completed state
-      nextQuestion()
-      return <p> test </p>
-    } else {
-      // Render a countdown
-      return <h1>{seconds}</h1>;
+  useEffect(() => {
+    if(resetTick === 0){
+      return;
     }
-  };
-
-  return <Countdown date={Date.now() + 10000} renderer={renderer} />;
+    reset();
+    start();
+  }, [resetTick])
+ 
+  return (
+    
+      <div>Countdown : {countdown/1000}</div>
+ 
+  );
 };
 
-export default CountdownTimer;
+export default Countdown;
