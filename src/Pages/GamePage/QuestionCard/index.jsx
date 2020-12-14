@@ -7,6 +7,30 @@ const QuestionCard = ({
   correct_answer,
   nextQuestion,
 }) => {
+  console.log(correct_answer)
+  const questionArray = incorrect_answers
+  if( questionArray.length < 4) {
+    questionArray.push(correct_answer)
+  }
+
+  const shuffle = (array) => {
+
+
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    while (0 !== currentIndex) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex -= 1;
+      temporaryValue = array[currentIndex];
+      array[currentIndex] = array[randomIndex];
+      array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+  }
+
+  shuffle(questionArray);
+  
   return (
     <>
       <div className="card question-card" style={{ width: "18rem" }}>
@@ -15,22 +39,16 @@ const QuestionCard = ({
             <span dangerouslySetInnerHTML={{__html:question}}/>
             <br />
             <div className="answers">
-              {incorrect_answers.map((choice) => {
+              {questionArray.map((choice) => {
                 return (
                   <button
                     className="answer-button"
-                    onClick={() => nextQuestion(choice, correct_answer)}
+                    onClick = {() => nextQuestion(choice, correct_answer)}
                   >
                     {choice}
                   </button>
                 );
               })}
-              <button
-                className="answer-button"
-                onClick={() => nextQuestion(correct_answer, correct_answer)}
-              >
-                {correct_answer}
-              </button>
             </div>
           </div>
         </div>

@@ -4,10 +4,8 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Cookie from "js-cookie";
 import QuestionCard from "./QuestionCard";
-import Countdown from "./Countdown/test2";
 import Pyramid from "./assets/pyramid.png";
-import CountdownTimer from "./Countdown/index";
-import Example from './Countdown/test3'
+import Countdown from './Countdown/index'
 
 const Game = () => {
   let { id } = useParams();
@@ -19,7 +17,8 @@ const Game = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState({});
   const [gameOn, setGameOn] = useState(false);
-  const [counter, setCounter] = useState(10);
+  const [newQuestionTime, setNewQuestionTime] = useState(new Date(Date.now()))
+  const [currentStep, setCurrentStep] = useState(0)
 
   useEffect(() => {
     console.log(questions);
@@ -34,6 +33,10 @@ const Game = () => {
   useEffect(() => {
     fetchGame();
   }, []);
+
+  useEffect(() => {
+    console.log(newQuestionTime)
+  }, [newQuestionTime])
 
   useEffect(() => {
     setCount(count + 1);
@@ -64,6 +67,8 @@ const Game = () => {
         game_id: id,
         response_correct:
           (!!answer_choice && !!correct_answer && answer_choice === correct_answer),
+        question_time: newQuestionTime,
+        response_time: new Date(Date.now())
       },
     };
     fetch(`https://pyramid-race-api.herokuapp.com/game_histories`, {
@@ -75,29 +80,37 @@ const Game = () => {
       body: JSON.stringify(data),
     }).then((response) => response.json());
 
+    if (answer_choice === correct_answer && currentStep < 5) {
+      setCurrentStep += 1
+    } else if (answer_choice === correct_answer && currentStep === 5) {
+      setCurrentStep += 1
+      
+    } else if (answer_choice !== correct_answer && currentStep > 0) {
+      setCurrentStep -= 1
+    }
+
     if (currentQuestionIndex < 12) {
       setCurrentQuestion(questions[currentQuestionIndex]);
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setCounter(10);
+      setNewQuestionTime(new Date(Date.now()))
     } else {
       setGameOn(false);
       setCurrentQuestion({});
       setCurrentQuestionIndex("");
+
     }
   };
-
-
 
   return (
     <div className="game_page">
       {gameOn && (
         <>
-          <Example onExpire={nextQuestion} resetTick={currentQuestionIndex}/>
+          <Countdown onExpire = {nextQuestion} resetTick = {currentQuestionIndex}/>
           <QuestionCard
-            question={currentQuestion.question}
-            correct_answer={currentQuestion.correct_answer}
-            incorrect_answers={currentQuestion.incorrect_answers}
-            nextQuestion={nextQuestion}
+            question = {currentQuestion.question}
+            correct_answer = {currentQuestion.correct_answer}
+            incorrect_answers = {currentQuestion.incorrect_answers}
+            nextQuestion = {nextQuestion}
           />
         </>
       )}
