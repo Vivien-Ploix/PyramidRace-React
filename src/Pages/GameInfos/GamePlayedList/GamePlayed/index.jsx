@@ -1,8 +1,36 @@
-import React, { useState, useEffect } from "react";
 import "./style.scss";
+import React, { useState, useEffect } from "react";
+import { Link, useHistory } from 'react-router-dom'
+import Cookie from 'js-cookie'
+import { useSelector } from 'react-redux'
 
-const GamePlayed = ({ opponentId, winner_id }) => {
+const GamePlayed = ({ opponentId, winner_id, gameId }) => {
+  const tokenCookie = Cookie.get('token')
   const [opponent, setOpponent] = useState({});
+  const history = useHistory()
+  const userId = useSelector((state) => state.id)
+  const categoriesArray = [
+    9,
+    10,
+    11,
+    12,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    21,
+    22,
+    23,
+    24,
+    26,
+    27,
+    28,
+    31,
+    32,
+  ];
+
   const getOpponentInfos = () => {
     fetch(`https://pyramid-race-api.herokuapp.com/users/${opponentId}`)
       .then((response) => response.json())
@@ -15,6 +43,33 @@ const GamePlayed = ({ opponentId, winner_id }) => {
   useEffect(() => {
     getOpponentInfos();
   }, []);
+
+
+  const startGame = (opponent_id) => {
+    const data = {
+      game: {
+        player1_id: userId,
+        player2_id: opponent_id,
+        difficulty: "medium",
+        category:
+          categoriesArray[Math.floor(Math.random() * categoriesArray.length)],
+      },
+    };
+
+    fetch(`https://pyramid-race-api.herokuapp.com/games`, {
+      method: "post",
+      headers: {
+        Authorization: `${tokenCookie}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        history.push(`/game/${response.id}`);
+      });
+  };
+
 
   return (
     <div className="container card-game">
@@ -53,8 +108,8 @@ const GamePlayed = ({ opponentId, winner_id }) => {
 
               <small>Adversaire : {opponent.pseudo}</small>
             </div>
-            {winner_id === null && <a href="#">Jouer</a>}
-            {winner_id !== null && <a href="#">Rejouer ?</a>}
+            {winner_id === null && <Link to={{pathname: `/game/${gameId}`}}>Jouer</Link>}
+            {winner_id !== null && <Link to="/" onClick={() => startGame(opponentId)}>Rejouer</Link>}
 
             <div className="ico-card">
               <i className="lni lni-pyramids"></i>
