@@ -5,7 +5,9 @@ import { useSelector } from "react-redux";
 import Cookie from "js-cookie";
 import QuestionCard from "./QuestionCard";
 import Countdown from "./Countdown/test2";
-import Pyramid from './pyramid.png'
+import Pyramid from "./assets/pyramid.png";
+import CountdownTimer from "./Countdown/index";
+import Example from './Countdown/test3'
 
 const Game = () => {
   let { id } = useParams();
@@ -17,23 +19,7 @@ const Game = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState({});
   const [gameOn, setGameOn] = useState(false);
-  const [counter, setCounter] = useState(15);
-
-  const fetchGame = () => {
-    fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`)
-      .then((response) => response.json())
-      .then((data) => setGame(data))
-      .catch((error) => console.log(error));
-  };
-
-  useEffect(() => {
-    counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
-    console.log(counter);
-  }, [counter]);
-
-  useEffect(() => {
-    fetchGame();
-  }, []);
+  const [counter, setCounter] = useState(10);
 
   useEffect(() => {
     console.log(questions);
@@ -46,11 +32,22 @@ const Game = () => {
   }, [questions]);
 
   useEffect(() => {
+    fetchGame();
+  }, []);
+
+  useEffect(() => {
     setCount(count + 1);
     if (count === 1) {
       fetchQuestions();
     }
   }, [game]);
+
+  const fetchGame = () => {
+    fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`)
+      .then((response) => response.json())
+      .then((data) => setGame(data))
+      .catch((error) => console.log(error));
+  };
 
   const fetchQuestions = () => {
     fetch(
@@ -65,10 +62,10 @@ const Game = () => {
       game_history: {
         user_id: userId,
         game_id: id,
-        response_correct: answer_choice === correct_answer ? true : false,
+        response_correct:
+          (!!answer_choice && !!correct_answer && answer_choice === correct_answer),
       },
     };
-
     fetch(`https://pyramid-race-api.herokuapp.com/game_histories`, {
       method: "post",
       headers: {
@@ -81,7 +78,7 @@ const Game = () => {
     if (currentQuestionIndex < 12) {
       setCurrentQuestion(questions[currentQuestionIndex]);
       setCurrentQuestionIndex(currentQuestionIndex + 1);
-      setCounter(15);
+      setCounter(10);
     } else {
       setGameOn(false);
       setCurrentQuestion({});
@@ -89,22 +86,23 @@ const Game = () => {
     }
   };
 
+
+
   return (
-    <div className= "game_page">
-      <div>Countdown: {counter}</div>
+    <div className="game_page">
       {gameOn && (
-        <QuestionCard
-          question={currentQuestion.question}
-          correct_answer={currentQuestion.correct_answer}
-          incorrect_answers={currentQuestion.incorrect_answers}
-          nextQuestion={nextQuestion}
-        /> 
+        <>
+          <Example onExpire={nextQuestion} resetTick={currentQuestionIndex}/>
+          <QuestionCard
+            question={currentQuestion.question}
+            correct_answer={currentQuestion.correct_answer}
+            incorrect_answers={currentQuestion.incorrect_answers}
+            nextQuestion={nextQuestion}
+          />
+        </>
       )}
-<div className= "game_content">
-      <img
-        className="pyramid"
-        src={Pyramid}
-      />
+      <div className="game_content">
+        <img className="pyramid" src={Pyramid} />
       </div>
     </div>
   );

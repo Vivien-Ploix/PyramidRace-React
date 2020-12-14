@@ -2,7 +2,7 @@
   
   width: 100vw;
   height: 100vh;
-  background-image: url("./pyramide_fond_mobile.png");
+  background-image: url("./assets/pyramide_fond_mobile.png");
   background-size: cover;
   
 
@@ -16,6 +16,6 @@
 
 
   @media(min-aspect-ratio: 3/4){
-    background-image: url("./pyramide_fond.png");
+    background-image: url("./assets/pyramide_fond.png");
   }
 }
