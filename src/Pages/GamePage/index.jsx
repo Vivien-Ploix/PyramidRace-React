@@ -1,27 +1,39 @@
+import "./style.scss";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import "./style.scss";
+import { useSelector } from "react-redux";
+import Cookie from "js-cookie";
+import QuestionCard from "./QuestionCard";
+import Countdown from "./Countdown/test2";
+import Pyramid from "./assets/pyramid.png";
+import CountdownTimer from "./Countdown/index";
+import Example from './Countdown/test3'
 
 const Game = () => {
   let { id } = useParams();
+  const userId = useSelector((state) => state.id);
+  const tokenCookie = Cookie.get("token");
   const [game, setGame] = useState({});
   const [questions, setQuestions] = useState([]);
   const [count, setCount] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState({});
+  const [gameOn, setGameOn] = useState(false);
+  const [counter, setCounter] = useState(10);
 
-  const fetchGame = () => {
-    fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`)
-      .then((response) => response.json())
-      .then((data) => setGame(data))
-      .catch((error) => console.log(error));
-  };
+  useEffect(() => {
+    console.log(questions);
+    if (questions.length === 12) {
+      setCurrentQuestion(questions[currentQuestionIndex]);
+      setGameOn(true);
+      console.log(currentQuestion);
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    }
+  }, [questions]);
 
   useEffect(() => {
     fetchGame();
   }, []);
-
-  useEffect(() => {
-    console.log(questions);
-  }, [questions]);
 
   useEffect(() => {
     setCount(count + 1);
@@ -29,6 +41,13 @@ const Game = () => {
       fetchQuestions();
     }
   }, [game]);
+
+  const fetchGame = () => {
+    fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`)
+      .then((response) => response.json())
+      .then((data) => setGame(data))
+      .catch((error) => console.log(error));
+  };
 
   const fetchQuestions = () => {
     fetch(
@@ -38,12 +57,53 @@ const Game = () => {
       .then((data) => setQuestions(data.results));
   };
 
+  const nextQuestion = (answer_choice, correct_answer) => {
+    const data = {
+      game_history: {
+        user_id: userId,
+        game_id: id,
+        response_correct:
+          (!!answer_choice && !!correct_answer && answer_choice === correct_answer),
+      },
+    };
+    fetch(`https://pyramid-race-api.herokuapp.com/game_histories`, {
+      method: "post",
+      headers: {
+        Authorization: `${tokenCookie}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((response) => response.json());
+
+    if (currentQuestionIndex < 12) {
+      setCurrentQuestion(questions[currentQuestionIndex]);
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setCounter(10);
+    } else {
+      setGameOn(false);
+      setCurrentQuestion({});
+      setCurrentQuestionIndex("");
+    }
+  };
+
+
+
   return (
-    <div>
-      <img
-        className="pyramid"
-        src="https://images-ext-1.discordapp.net/external/tF1PXlIZEKh7BcTePbgP6i3-KggPwIF-OrfVurkS5ug/https/img2.freepng.es/20180607/kct/kisspng-chichen-itza-maya-civilization-computer-icons-meso-architecture-tools-5b19d3209ce524.4773494615284191046427.jpg"
-      ></img>
+    <div className="game_page">
+      {gameOn && (
+        <>
+          <Example onExpire={nextQuestion} resetTick={currentQuestionIndex}/>
+          <QuestionCard
+            question={currentQuestion.question}
+            correct_answer={currentQuestion.correct_answer}
+            incorrect_answers={currentQuestion.incorrect_answers}
+            nextQuestion={nextQuestion}
+          />
+        </>
+      )}
+      <div className="game_content">
+        <img className="pyramid" src={Pyramid} />
+      </div>
     </div>
   );
 };

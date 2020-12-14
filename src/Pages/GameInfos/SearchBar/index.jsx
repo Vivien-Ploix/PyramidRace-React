@@ -3,7 +3,7 @@ import "./style.scss";
 import { useSelector } from "react-redux";
 import Cookie from "js-cookie";
 import { useHistory } from "react-router-dom";
-import PlayerSuggestion from "./../PlayerSuggestion";
+import PlayerSuggestion from "./PlayerSuggestion";
 
 const SearchBar = () => {
   const [input, setInput] = useState("");
@@ -75,14 +75,18 @@ const SearchBar = () => {
       />
       <div className="search" onClick={closeSearch}></div>
       <div className="suggestions">
-        {suggestions.map((suggestion) => (
-          <PlayerSuggestion
-            pseudo={suggestion.pseudo}
-            onClick={() => {
-              startGame(suggestion.id);
-            }}
-          />
-        ))}
+        {suggestions.map((suggestion) => {
+          if (suggestion.id != userId) {
+            return (
+              <PlayerSuggestion
+                pseudo={suggestion.pseudo}
+                onClick={() => {
+                  startGame(suggestion.id);
+                }}
+              />
+            );
+          }
+        })}
       </div>
     </div>
   );
