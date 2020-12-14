@@ -29,6 +29,7 @@ const GamePlayed = ({ opponentId, winner_id }) => {
                     Tu es le grand gagnant de cette partie ! ( calme toi quand
                     meme)
                   </p>
+                  
                 </div>
               )}
               {winner_id === opponentId && (
@@ -40,16 +41,23 @@ const GamePlayed = ({ opponentId, winner_id }) => {
                   </p>
                 </div>
               )}
-              {winner_id === null && (
+             {winner_id === null && (
                 <div>
                   <h1>En cours</h1>
                   <p>La partie n'est pas encore terminée ! Quel suspens !</p>
+                  
                 </div>
-              )}
+              )} 
 
               <small>Adversaire : {opponent.pseudo}</small>
             </div>
-            <a href="#">Rejouer ?</a>
+            {winner_id === null && (
+               <a href="#">Jouer</a>
+               )} 
+               {winner_id !== null && (
+               <a href="#">Rejouer ?</a>
+               )} 
+            
             <div className="ico-card">
               <i className="lni lni-pyramids"></i>
             </div>

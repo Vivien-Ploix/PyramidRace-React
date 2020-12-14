@@ -96,12 +96,12 @@ const Game = () => {
     <div className="game_page">
       {gameOn && (
         <>
-          <Countdown onExpire={nextQuestion} resetTick={currentQuestionIndex}/>
+          <Countdown onExpire = {nextQuestion} resetTick = {currentQuestionIndex}/>
           <QuestionCard
-            question={currentQuestion.question}
-            correct_answer={currentQuestion.correct_answer}
-            incorrect_answers={currentQuestion.incorrect_answers}
-            nextQuestion={nextQuestion}
+            question = {currentQuestion.question}
+            correct_answer = {currentQuestion.correct_answer}
+            incorrect_answers = {currentQuestion.incorrect_answers}
+            nextQuestion = {nextQuestion}
           />
         </>
       )}

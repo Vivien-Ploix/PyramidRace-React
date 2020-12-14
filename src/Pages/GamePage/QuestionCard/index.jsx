@@ -43,7 +43,7 @@ const QuestionCard = ({
                 return (
                   <button
                     className="answer-button"
-                    onClick={() => nextQuestion(choice, correct_answer)}
+                    onClick = {() => nextQuestion(choice, correct_answer)}
                   >
                     {choice}
                   </button>

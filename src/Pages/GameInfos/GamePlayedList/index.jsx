@@ -28,10 +28,10 @@ const GamePlayedList = () => {
   useEffect(() => {
     let player_stats = {
       games_played: gamesPlayedStats.length,
-      games_won: gamesPlayedStats.filter((game) => game.winner_id == userId)
+      games_won: gamesPlayedStats.filter((game) => game.winner_id === userId)
         .length,
       games_lost: gamesPlayedStats.filter(
-        (game) => game.winner_id != userId && game.winner_id != null
+        (game) => game.winner_id !== userId && game.winner_id !== null
       ).length,
     };
     setPlayerStats(player_stats);
@@ -40,28 +40,48 @@ const GamePlayedList = () => {
   return (
     <div className="GameInfoContainer">
       <div className="game-info-column col-lg-8">
+      <h1 className="text-center" >Parties en cours</h1>
+      <br/>
+      <div className="list-container">
+       
+       {gamesPlayed.map((game) => {
+         if (game.winner_id === null) {
+           return (
+             <GamePlayed
+               gameId = {game.id}
+               opponentId = {game.player2_id}
+               winner_id = {game.winner_id}
+               key = {game.id}
+             />
+           )}})}
+           </div>
+
+      <h1 className="text-center" >Parties terminées</h1>
+      <br/>
         <div className="list-container">
+       
           {gamesPlayed.map((game) => {
-            if (game.player1_id == userId) {
+            if (game.winner_id === userId) {
               return (
                 <GamePlayed
-                  gameId={game.id}
-                  opponentId={game.player2_id}
-                  winner_id={game.winner_id}
-                  key={game.id}
+                  gameId = {game.id}
+                  opponentId = {game.player2_id}
+                  winner_id = {game.winner_id}
+                  key = {game.id}
                 />
               );
-            } else {
+            } else if (!!game.winner_id && game.winner_id !== userId ){
               return (
                 <GamePlayed
-                  gameId={game.id}
-                  opponentId={game.player1_id}
-                  winner_id={game.winner_id}
-                  key={game.id}
+                  gameId = {game.id}
+                  opponentId = {game.player1_id}
+                  winner_id = {game.winner_id}
+                  key = {game.id}
                 />
               );
             }
-          })}
+            }
+          )}
         </div>
       </div>
       <div className="game-info-column col-lg-3 player-infos-col">
