@@ -3,7 +3,7 @@ import "./style.scss";
 import { useSelector } from "react-redux";
 import Cookie from "js-cookie";
 import { useHistory } from "react-router-dom";
-import PlayerSuggestion from "./../PlayerSuggestion";
+import PlayerSuggestion from "./PlayerSuggestion";
 
 const SearchBar = () => {
   const [input, setInput] = useState("");

@@ -3,8 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Cookie from "js-cookie";
-import QuestionCard from "../../Components/QuestionCard";
-import Countdown from "../../Components/Countdown/test2";
+import QuestionCard from "./QuestionCard";
+import Countdown from "./Countdown/test2";
+import Pyramid from './pyramid.png'
 
 const Game = () => {
   let { id } = useParams();
@@ -89,7 +90,7 @@ const Game = () => {
   };
 
   return (
-    <div>
+    <div className= "game_page">
       <div>Countdown: {counter}</div>
       {gameOn && (
         <QuestionCard
@@ -97,13 +98,14 @@ const Game = () => {
           correct_answer={currentQuestion.correct_answer}
           incorrect_answers={currentQuestion.incorrect_answers}
           nextQuestion={nextQuestion}
-        />
+        /> 
       )}
-
+<div className= "game_content">
       <img
         className="pyramid"
-        src="https://images-ext-1.discordapp.net/external/tF1PXlIZEKh7BcTePbgP6i3-KggPwIF-OrfVurkS5ug/https/img2.freepng.es/20180607/kct/kisspng-chichen-itza-maya-civilization-computer-icons-meso-architecture-tools-5b19d3209ce524.4773494615284191046427.jpg"
-      ></img>
+        src={Pyramid}
+      />
+      </div>
     </div>
   );
 };

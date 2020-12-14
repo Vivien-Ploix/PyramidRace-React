@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import GamePlayed from "./../GamePlayed";
+import GamePlayed from "./GamePlayed";
 import PlayerInfos from "./../PlayerInfos";
 import "./style.scss";
 

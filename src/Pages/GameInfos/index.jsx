@@ -1,7 +1,7 @@
 import React from "react";
-import JumbotronGameInfos from "../../Components/JumbotronGameInfos";
+import JumbotronGameInfos from "./JumbotronGameInfos";
 import "./style.scss";
-import GamePlayedList from "../../Components/GamePlayedList";
+import GamePlayedList from "./GamePlayedList";
 
 const GameInfos = () => {
   return (

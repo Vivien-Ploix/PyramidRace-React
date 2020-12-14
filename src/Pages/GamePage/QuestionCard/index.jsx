@@ -12,7 +12,7 @@ const QuestionCard = ({
       <div className="card question-card" style={{ width: "18rem" }}>
         <div className="card-body">
           <div className="card-text">
-            {question}
+            <span dangerouslySetInnerHTML={{__html:question}}/>
             <br />
             <div className="answers">
               {incorrect_answers.map((choice) => {
