@@ -39,11 +39,11 @@ const Game = () => {
   };
 
   return (
-    <div>
-      <img
+    <div className= 'game_page'>
+      {/* <img
         className="pyramid"
-        src="https://images-ext-1.discordapp.net/external/tF1PXlIZEKh7BcTePbgP6i3-KggPwIF-OrfVurkS5ug/https/img2.freepng.es/20180607/kct/kisspng-chichen-itza-maya-civilization-computer-icons-meso-architecture-tools-5b19d3209ce524.4773494615284191046427.jpg"
-      ></img>
+        src="/assets/images/pyramide_fond.png"
+      /> */}
     </div>
   );
 };
