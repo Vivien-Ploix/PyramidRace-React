@@ -32,7 +32,9 @@ const Jumbotron = () => {
   ];
 
   const fetchPossibleOpponents = () => {
-    fetch(`https://pyramid-race-api.herokuapp.com/users/${userId}possible_opponents`)
+    fetch(
+      `https://pyramid-race-api.herokuapp.com/users/${userId}/possible_opponents`
+    )
       .then((response) => response.json())
       .then((data) => {
         setPossibleOpponents(data);
@@ -43,6 +45,10 @@ const Jumbotron = () => {
   useEffect(() => {
     fetchPossibleOpponents();
   }, []);
+
+  useEffect(() => {
+    console.log(possibleOpponents);
+  }, [possibleOpponents]);
 
   const startGame = () => {
     const data = {
