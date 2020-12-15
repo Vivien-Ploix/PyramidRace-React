@@ -1,27 +1,23 @@
-import React, { useEffect } from 'react';
- 
-import { useCountdownTimer } from 'use-countdown-timer';
- 
+import React, { useEffect } from "react";
+
+import { useCountdownTimer } from "use-countdown-timer";
+
 const Countdown = ({ onExpire, resetTick }) => {
   const { countdown, reset, start } = useCountdownTimer({
-    timer: 1000 * 10,
+    timer: 1000 * 20000,
     autostart: true,
-    onExpire
+    onExpire,
   });
 
   useEffect(() => {
-    if(resetTick === 0){
+    if (resetTick === 0) {
       return;
     }
     reset();
     start();
-  }, [resetTick])
- 
-  return (
-    
-      <div>Countdown : {countdown/1000}</div>
- 
-  );
+  }, [resetTick]);
+
+  return <div>Countdown : {countdown / 1000}</div>;
 };
 
 export default Countdown;
