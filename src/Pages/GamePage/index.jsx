@@ -1,5 +1,5 @@
 import "./style.scss";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Cookie from "js-cookie";
@@ -9,6 +9,7 @@ import Perso1 from "./assets/perso1.png";
 import Perso2 from "./assets/perso2.png";
 import Countdown from "./Countdown/index";
 import ModalDiv from "./Modal/index";
+import { motion } from "framer-motion";
 import { Prompt } from "react-router-dom";
 
 const Game = () => {
@@ -25,7 +26,9 @@ const Game = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [gameHistories, setGameHistories] = useState([]);
+  const [perso1animation, setPerso1Animation] = useState({x: 0, y: 0})
   const history = useHistory();
+  const pyramidRef = useRef()
 
   const openModal = () => {
     setIsOpen(true);
@@ -37,21 +40,21 @@ const Game = () => {
   };
 
   useEffect(() => {
-    console.log(gameHistories);
+    //console.log(gameHistories);
   }, [gameHistories]);
 
   useEffect(() => {
-    console.log(questions);
+    //console.log(questions);
     if (questions.length === 12) {
       setCurrentQuestion(questions[currentQuestionIndex]);
       setGameOn(true);
-      console.log(currentQuestion);
+     // console.log(currentQuestion);
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   }, [questions]);
 
   useEffect(() => {
-    console.log(currentQuestion);
+    //console.log(currentQuestion);
   }, [currentQuestion]);
 
   useEffect(() => {
@@ -59,19 +62,19 @@ const Game = () => {
   }, []);
 
   useEffect(() => {
-    console.log(newQuestionTime);
+  //  console.log(newQuestionTime);
   }, [newQuestionTime]);
 
   useEffect(() => {
     setCount(count + 1);
     if (count === 1) {
-      console.log("test ongoing");
-      console.log(game);
+     // console.log("test ongoing");
+      //console.log(game);
       if (userId == game.player2_id) {
-        console.log("test succeeded");
+        //console.log("test succeeded");
         fetchHistoryPlayer1();
       }
-      console.log(game);
+      //console.log(game);
       fetchQuestions();
     }
   }, [game]);
@@ -95,7 +98,7 @@ const Game = () => {
     fetch(`https://pyramid-race-api.herokuapp.com/games/${id}/game_histories`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+       // console.log(data);
         setGameHistories(data);
       })
       .catch((error) => console.log(error));
@@ -105,17 +108,17 @@ const Game = () => {
     let player1_correct_answers = gameHistories.filter(
       (game_history) => game_history.correct_answer === true
     ).length;
-    console.log("game histories : correct answers");
-    console.log(player1_correct_answers);
+   // console.log("game histories : correct answers");
+   // console.log(player1_correct_answers);
     let player1_wrong_answers = gameHistories.filter(
       (game_history) => game_history.correct_answer !== true
     ).length;
-    console.log("game histories : wronf answers");
-    console.log(player1_wrong_answers);
+   // console.log("game histories : wronf answers");
+    //console.log(player1_wrong_answers);
     let player1_step = player1_correct_answers - player1_wrong_answers;
-    console.log("player 1 step : ", player1_step);
+  //  console.log("player 1 step : ", player1_step);
     let winner_id;
-    console.log("winner_id :", winner_id);
+  // console.log("winner_id :", winner_id);
     if (player1_step >= currentStep) {
       winner_id = game.player1_id;
     } else {
@@ -159,9 +162,6 @@ const Game = () => {
     });
   };
 
-  useEffect(() => {
-    console.log(currentStep);
-  }, [currentStep]);
 
   const nextQuestion = (answer_choice, correct_answer) => {
     const data = {
@@ -183,7 +183,7 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((response) => response.json());
+    })
 
     if (answer_choice && answer_choice === correct_answer && currentStep < 5) {
       setCurrentStep(currentStep + 1);
@@ -215,44 +215,39 @@ const Game = () => {
         nextTurn();
         openModal();
       } else if (userId == game.player2_id) {
-        console.log("partie terminee");
+        //console.log("partie terminee");
         gameEnd();
       }
     }
   };
 
+
+
   // Prompt before leaving page
 
-  // useEffect(() => {
-  //   window.addEventListener('beforeunload', alertUser)
-  //   if(userId == game.player1_id){
-  //     console.log("testtesttets")
-  //       window.addEventListener('unload', destroyGame)
-  //     } else if (userId == game.payer2_id){
-  //       window.addEventListener('unload', forfeitGame)
-  //   }
+  useEffect(() => {
 
-  //   if(userId == game.player1_id){
-  //     console.log("teeeeeeeeest")
-  //     return () => {
-  //       window.removeEventListener('beforeunload', alertUser)
-  //       window.removeEventListener('unload', destroyGame)
-  //       destroyGame()
-  //     }
-  //   } else if (userId == game.player2_id) {
-  //     return () => {
-  //       window.removeEventListener('beforeunload', alertUser)
-  //       window.removeEventListener('unload', forfeitGame)
-  //       forfeitGame()
-  //     }
-  //   }
-  // }, [])
+    const usableCallback = () => (
+      userId == game.player1_id ? destroyGame() : forfeitGame()
+    );
+
+    window.addEventListener('beforeunload', alertUser)
+    window.addEventListener('unload', usableCallback)
+
+    return () => {
+      window.removeEventListener('beforeunload', alertUser)
+      window.removeEventListener('unload', usableCallback)
+    }
+  }, [])
+
+
 
   const alertUser = (e) => {
     e.preventDefault();
     e.returnValue = "";
   };
   const destroyGame = () => {
+    if (!gameOn){return}
     fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`, {
       method: "delete",
       headers: {
@@ -263,6 +258,7 @@ const Game = () => {
   };
 
   const forfeitGame = () => {
+    if (!gameOn){return}
     const data = {
       game: {
         winner_id: game.player1_id,
@@ -279,20 +275,42 @@ const Game = () => {
     });
   };
 
-  const move = (e) => {
-    console.log(e.currentTarget);
 
-    var element = e.currentTarget;
-  };
+  const movePlayer1 = () => {
+    const pyramidHeight = pyramidRef.current.getBoundingClientRect().height;
+    const pyramidWidth = pyramidRef.current.getBoundingClientRect().width;
+    const marchHeight = pyramidHeight / 6.57;
+    const groundHeight = pyramidHeight / 100;
+    const marchWidth = (pyramidWidth / 2) / 7;
+    
+    if(currentStep < 6){
+      setPerso1Animation({x: currentStep * marchWidth, y: -currentStep * marchHeight - groundHeight});
+    } else if (currentStep === 6) {
+      setPerso1Animation({x: currentStep * marchWidth + marchWidth / 1.3, y: -5 * marchHeight - groundHeight});
+    }
+  }
+
+    useEffect(() => {
+      console.log(currentStep)
+      movePlayer1()
+    }, [currentStep])
+
+    useEffect(() => {
+      setTimeout(movePlayer1, 100);
+      window.addEventListener("resize", movePlayer1)
+      return () => {
+        window.removeEventListener("resize", movePlayer1)
+      }
+    }, [])
 
   return (
     <div className="game_page">
-      {userId == game.player1_id && (
+      {(userId == game.player1_id && gameOn) &&(
         <Prompt
           message={() => "Si vous quittez cette page la partie sera perdue !"}
         />
       )}
-      {userId == game.player2_id && (
+      {(userId == game.player2_id && gameOn) && (
         <Prompt
           message={() =>
             "Si vous quittez cette page, vous serez automatiquement déclaré forfait !"
@@ -319,13 +337,13 @@ const Game = () => {
         </>
       )}
       <div className="game_content">
-        <img className="pyramid" src={Pyramid} />
-      </div>
-      <div className="perso1" onClick={move}>
-        <img className="perso" src={Perso1} />
-      </div>
-      <div className="perso2" onClick={move}>
-        <img className="perso" src={Perso2} />
+        <img className="pyramid" src={Pyramid} ref={pyramidRef}/>
+        <motion.div className="perso1" animate={perso1animation} transition={{type:'Tween', stiffness:100}}>
+          <img className="perso" src={Perso1} />
+        </motion.div>
+        <div className="perso2">
+          <img className="perso" src={Perso2} />
+        </div>
       </div>
     </div>
   );

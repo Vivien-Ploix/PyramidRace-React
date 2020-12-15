@@ -17,7 +17,7 @@ const Countdown = ({ onExpire, resetTick }) => {
     start();
   }, [resetTick]);
 
-  return <div>Countdown : {countdown / 1000}</div>;
+  return <div className="countdown">Countdown : {countdown / 1000}</div>;
 };
 
 export default Countdown;
