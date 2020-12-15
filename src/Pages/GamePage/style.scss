@@ -4,8 +4,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  //background-image: url("./assets/pyramide_fond_mobile.png");
-  //background-size: cover;
+  background-image: url("./assets/fond_simple.png");
+  background-size: cover;
 
   .countdown {
     position: absolute;
@@ -22,20 +22,19 @@
 
     .pyramid {
       width: 95%;
-
     }
 
     .perso {
       width: 100%;
     }
-  
+
     .perso1 {
       position: absolute;
       bottom: 0;
       width: 8%;
       left: 0;
     }
-  
+
     .perso2 {
       position: absolute;
       bottom: 0;
@@ -47,6 +46,4 @@
   // @media (min-aspect-ratio: 3/4) {
   //   background-image: url("./assets/pyramide_fond.png");
   // }
-
- 
 }

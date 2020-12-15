@@ -26,9 +26,12 @@ const Game = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [gameHistories, setGameHistories] = useState([]);
-  const [perso1animation, setPerso1Animation] = useState({x: 0, y: 0})
+  const [perso1animation, setPerso1Animation] = useState({ x: 0, y: 0 });
+  const [perso2animation, setPerso2Animation] = useState({ x: 0, y: 0 });
+  const [firstGameHistory, setFirstGameHistory] = useState({});
   const history = useHistory();
-  const pyramidRef = useRef()
+  const pyramidRef = useRef();
+  const [count2, setCount2] = useState(0);
 
   const openModal = () => {
     setIsOpen(true);
@@ -40,41 +43,25 @@ const Game = () => {
   };
 
   useEffect(() => {
-    //console.log(gameHistories);
-  }, [gameHistories]);
-
-  useEffect(() => {
-    //console.log(questions);
     if (questions.length === 12) {
       setCurrentQuestion(questions[currentQuestionIndex]);
       setGameOn(true);
-     // console.log(currentQuestion);
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   }, [questions]);
 
   useEffect(() => {
-    //console.log(currentQuestion);
-  }, [currentQuestion]);
-
-  useEffect(() => {
     fetchGame();
   }, []);
 
-  useEffect(() => {
-  //  console.log(newQuestionTime);
-  }, [newQuestionTime]);
+  useEffect(() => {}, [newQuestionTime]);
 
   useEffect(() => {
     setCount(count + 1);
     if (count === 1) {
-     // console.log("test ongoing");
-      //console.log(game);
       if (userId == game.player2_id) {
-        //console.log("test succeeded");
         fetchHistoryPlayer1();
       }
-      //console.log(game);
       fetchQuestions();
     }
   }, [game]);
@@ -98,32 +85,32 @@ const Game = () => {
     fetch(`https://pyramid-race-api.herokuapp.com/games/${id}/game_histories`)
       .then((response) => response.json())
       .then((data) => {
-       // console.log(data);
         setGameHistories(data);
+        console.log(data[0]);
+        setFirstGameHistory(data[0]);
       })
       .catch((error) => console.log(error));
   };
 
   const gameEnd = () => {
     let player1_correct_answers = gameHistories.filter(
-      (game_history) => game_history.correct_answer === true
+      (game_history) => game_history.response_correct === true
     ).length;
-   // console.log("game histories : correct answers");
-   // console.log(player1_correct_answers);
     let player1_wrong_answers = gameHistories.filter(
-      (game_history) => game_history.correct_answer !== true
+      (game_history) => game_history.response_correct !== true
     ).length;
-   // console.log("game histories : wronf answers");
-    //console.log(player1_wrong_answers);
     let player1_step = player1_correct_answers - player1_wrong_answers;
-  //  console.log("player 1 step : ", player1_step);
     let winner_id;
-  // console.log("winner_id :", winner_id);
     if (player1_step >= currentStep) {
       winner_id = game.player1_id;
     } else {
       winner_id = game.player2_id;
     }
+    console.log(player1_correct_answers);
+    console.log(player1_wrong_answers);
+    console.log(player1_step);
+    console.log(winner_id);
+
     const data = {
       game: {
         winner_id: winner_id,
@@ -141,7 +128,7 @@ const Game = () => {
       if (userId == winner_id) {
         history.push(`/games/${id}/victory`);
       } else if (userId != winner_id) {
-        history.push(`/game/${id}/defeat`);
+        history.push(`/games/${id}/defeat`);
       }
     });
   };
@@ -161,7 +148,6 @@ const Game = () => {
       body: JSON.stringify(data),
     });
   };
-
 
   const nextQuestion = (answer_choice, correct_answer) => {
     const data = {
@@ -183,7 +169,7 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    })
+    });
 
     if (answer_choice && answer_choice === correct_answer && currentStep < 5) {
       setCurrentStep(currentStep + 1);
@@ -195,7 +181,12 @@ const Game = () => {
       setCurrentStep(currentStep + 1);
       setGameOn(false);
       setCurrentQuestion({});
-      setCurrentQuestionIndex("");
+      if (userId == game.player1_id) {
+        nextTurn();
+        openModal();
+      } else if (userId == game.player2_id) {
+        gameEnd();
+      }
     } else if (
       (!answer_choice && currentStep > 0) ||
       (answer_choice !== correct_answer && currentStep > 0)
@@ -215,39 +206,36 @@ const Game = () => {
         nextTurn();
         openModal();
       } else if (userId == game.player2_id) {
-        //console.log("partie terminee");
         gameEnd();
       }
     }
   };
 
-
-
   // Prompt before leaving page
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const usableCallback = () => (
-      userId == game.player1_id ? destroyGame() : forfeitGame()
-    );
+  //   const usableCallback = () => (
+  //     userId == game.player1_id ? destroyGame() : forfeitGame()
+  //   );
 
-    window.addEventListener('beforeunload', alertUser)
-    window.addEventListener('unload', usableCallback)
+  //   window.addEventListener('beforeunload', alertUser)
+  //   window.addEventListener('unload', usableCallback)
 
-    return () => {
-      window.removeEventListener('beforeunload', alertUser)
-      window.removeEventListener('unload', usableCallback)
-    }
-  }, [])
-
-
+  //   return () => {
+  //     window.removeEventListener('beforeunload', alertUser)
+  //     window.removeEventListener('unload', usableCallback)
+  //   }
+  // }, [])
 
   const alertUser = (e) => {
     e.preventDefault();
     e.returnValue = "";
   };
   const destroyGame = () => {
-    if (!gameOn){return}
+    if (!gameOn) {
+      return;
+    }
     fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`, {
       method: "delete",
       headers: {
@@ -258,7 +246,9 @@ const Game = () => {
   };
 
   const forfeitGame = () => {
-    if (!gameOn){return}
+    if (!gameOn) {
+      return;
+    }
     const data = {
       game: {
         winner_id: game.player1_id,
@@ -275,42 +265,90 @@ const Game = () => {
     });
   };
 
-
-  const movePlayer1 = () => {
+  const movePlayer1 = (step) => {
     const pyramidHeight = pyramidRef.current.getBoundingClientRect().height;
     const pyramidWidth = pyramidRef.current.getBoundingClientRect().width;
     const marchHeight = pyramidHeight / 6.57;
     const groundHeight = pyramidHeight / 100;
-    const marchWidth = (pyramidWidth / 2) / 7;
-    
-    if(currentStep < 6){
-      setPerso1Animation({x: currentStep * marchWidth, y: -currentStep * marchHeight - groundHeight});
-    } else if (currentStep === 6) {
-      setPerso1Animation({x: currentStep * marchWidth + marchWidth / 1.3, y: -5 * marchHeight - groundHeight});
-    }
-  }
+    const marchWidth = pyramidWidth / 2 / 7;
 
-    useEffect(() => {
-      console.log(currentStep)
-      movePlayer1()
-    }, [currentStep])
-
-    useEffect(() => {
-      setTimeout(movePlayer1, 100);
-      window.addEventListener("resize", movePlayer1)
-      return () => {
-        window.removeEventListener("resize", movePlayer1)
+    if (step >= 0) {
+      if (step < 6) {
+        setPerso1Animation({
+          x: step * marchWidth,
+          y: -step * marchHeight - groundHeight,
+        });
+      } else if (step === 6) {
+        setPerso1Animation({
+          x: step * marchWidth + marchWidth / 1.3,
+          y: -5 * marchHeight - groundHeight,
+        });
       }
-    }, [])
+    } else if (step < 0) {
+      if (step > -6) {
+        setPerso2Animation({
+          x: step * marchWidth,
+          y: step * marchHeight - groundHeight,
+        });
+      } else if (step === -6) {
+        setPerso2Animation({
+          x: step * marchWidth - marchWidth / 1.3,
+          y: -5 * marchHeight - groundHeight,
+        });
+      }
+    }
+  };
+
+  const movePlayer2 = () => {
+    let step = 0;
+    const startOpponentGame = Date.parse(gameHistories[0].question_time);
+    gameHistories.forEach((game_history) => {
+      console.log(Date.parse(game_history.response_time) - startOpponentGame);
+      console.log(game_history.response_correct);
+      setTimeout(function () {
+        if (game_history.response_correct) {
+          step += 1;
+        } else {
+          step -= 1;
+        }
+        movePlayer1(-step);
+      }, Date.parse(game_history.response_time) - startOpponentGame);
+    });
+  };
+
+  useEffect(() => {
+    console.log(currentStep);
+    movePlayer1(currentStep);
+  }, [currentStep]);
+
+  useEffect(() => {
+    console.log(perso1animation);
+  }, [perso1animation]);
+
+  useEffect(() => {
+    console.log(gameHistories);
+    console.log(firstGameHistory);
+    setCount2(count2 + 1);
+    if (count2 === 1) {
+      movePlayer2();
+    }
+  }, [firstGameHistory]);
+
+  useEffect(() => {
+    window.addEventListener("resize", movePlayer1);
+    return () => {
+      window.removeEventListener("resize", movePlayer1);
+    };
+  }, []);
 
   return (
     <div className="game_page">
-      {(userId == game.player1_id && gameOn) &&(
+      {userId == game.player1_id && gameOn && (
         <Prompt
           message={() => "Si vous quittez cette page la partie sera perdue !"}
         />
       )}
-      {(userId == game.player2_id && gameOn) && (
+      {userId == game.player2_id && gameOn && (
         <Prompt
           message={() =>
             "Si vous quittez cette page, vous serez automatiquement déclaré forfait !"
@@ -333,17 +371,24 @@ const Game = () => {
             incorrect_answers={currentQuestion.incorrect_answers}
             nextQuestion={nextQuestion}
           />
-          <div id="test"></div>
         </>
       )}
       <div className="game_content">
-        <img className="pyramid" src={Pyramid} ref={pyramidRef}/>
-        <motion.div className="perso1" animate={perso1animation} transition={{type:'Tween', stiffness:100}}>
+        <img className="pyramid" src={Pyramid} ref={pyramidRef} />
+        <motion.div
+          className="perso1"
+          animate={perso1animation}
+          transition={{ type: "Tween", stiffness: 100 }}
+        >
           <img className="perso" src={Perso1} />
         </motion.div>
-        <div className="perso2">
+        <motion.div
+          className="perso2"
+          animate={perso2animation}
+          transition={{ type: "Tween", stiffness: 100 }}
+        >
           <img className="perso" src={Perso2} />
-        </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import "./style.scss";
-import React from "react";
+import React, { useEffect } from "react";
 
 const QuestionCard = ({
   question,
@@ -29,7 +29,9 @@ const QuestionCard = ({
     return array;
   };
 
-  shuffle(questionArray);
+  useEffect(() => {
+    shuffle(questionArray);
+  }, [correct_answer]);
 
   return (
     <>
