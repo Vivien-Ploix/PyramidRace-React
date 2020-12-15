@@ -32,12 +32,10 @@ const Jumbotron = () => {
   ];
 
   const fetchPossibleOpponents = () => {
-    fetch(`https://pyramid-race-api.herokuapp.com/users`)
+    fetch(`https://pyramid-race-api.herokuapp.com/users/${userId}possible_opponents`)
       .then((response) => response.json())
       .then((data) => {
-        setPossibleOpponents(
-          data.filter((user) => user.id !== parseInt(userId))
-        );
+        setPossibleOpponents(data);
       })
       .catch((error) => console.log(error));
   };

@@ -7,6 +7,7 @@ import QuestionCard from "./QuestionCard";
 import Pyramid from "./assets/pyramid.png";
 import Countdown from './Countdown/index'
 import ModalDiv from './Modal/index'
+import {Prompt} from 'react-router-dom'
 
 const Game = () => {
   let { id } = useParams();
@@ -48,6 +49,10 @@ const Game = () => {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   }, [questions]);
+
+  useEffect(() => {
+    console.log(currentQuestion)
+  }, [currentQuestion])
 
   useEffect(() => {
     fetchGame();
@@ -99,9 +104,15 @@ const Game = () => {
 
   const gameEnd = () => {
     let player1_correct_answers = gameHistories.filter((game_history) => game_history.correct_answer === true).length
+    console.log("game histories : correct answers")
+    console.log(player1_correct_answers)
     let player1_wrong_answers = gameHistories.filter((game_history) => game_history.correct_answer !== true).length
+    console.log("game histories : wronf answers")
+    console.log(player1_wrong_answers)
     let player1_step = player1_correct_answers - player1_wrong_answers
+    console.log("player 1 step : ", player1_step)
     let winner_id;
+    console.log("winner_id :", winner_id)
     if (player1_step >= currentStep){
       winner_id = game.player1_id
     } else {
@@ -120,9 +131,12 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((response) => response.json());
-
+    })
   }
+
+  useEffect(() => {
+    console.log(currentStep)
+  }, [currentStep])
 
   const nextQuestion = (answer_choice, correct_answer) => {
     const data = {
@@ -144,16 +158,14 @@ const Game = () => {
       body: JSON.stringify(data),
     }).then((response) => response.json());
 
-    if (answer_choice === correct_answer && currentStep < 5) {
+    if (answer_choice && answer_choice === correct_answer && currentStep < 5) {
       setCurrentStep(currentStep + 1)
-    } else if (answer_choice === correct_answer && currentStep === 5) {
+    } else if (answer_choice && answer_choice === correct_answer && currentStep === 5) {
       setCurrentStep(currentStep + 1);
       setGameOn(false);
       setCurrentQuestion({});
       setCurrentQuestionIndex("");
-
-      openModal()
-    } else if (answer_choice !== correct_answer && currentStep > 0) {
+    } else if (!answer_choice && currentStep > 0 || answer_choice !== correct_answer && currentStep > 0) {
       setCurrentStep(currentStep - 1)
     }
 
@@ -165,18 +177,92 @@ const Game = () => {
       setGameOn(false);
       setCurrentQuestion({});
       setCurrentQuestionIndex("");
-      if (userId === game.player1_id) {
+      if (userId == game.player1_id) {
         openModal()
-      } else if (userId === game.player2_id) {
+      } else if (userId == game.player2_id) {
+        console.log("partie terminee")
         gameEnd()
       }
     }
   };
 
+
+  // Prompt before leaving page 
+
+
+  // useEffect(() => {
+  //   window.addEventListener('beforeunload', alertUser)
+  //   if(userId == game.player1_id){
+  //     console.log("testtesttets")
+  //       window.addEventListener('unload', destroyGame)
+  //     } else if (userId == game.payer2_id){
+  //       window.addEventListener('unload', forfeitGame)
+  //   }
+
+  //   if(userId == game.player1_id){
+  //     console.log("teeeeeeeeest")
+  //     return () => {
+  //       window.removeEventListener('beforeunload', alertUser)
+  //       window.removeEventListener('unload', destroyGame)
+  //       destroyGame()
+  //     } 
+  //   } else if (userId == game.player2_id) {
+  //     return () => {
+  //       window.removeEventListener('beforeunload', alertUser)
+  //       window.removeEventListener('unload', forfeitGame)
+  //       forfeitGame()
+  //     }
+  //   }
+  // }, [])
+
+  const alertUser = e => {
+    e.preventDefault()
+    e.returnValue = ''
+  }
+  const destroyGame = () => {
+    fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`, {
+      method: "delete",
+      headers: {
+        Authorization: `${tokenCookie}`,
+        "Content-Type": "application/json",
+      },
+    })
+  }
+
+  const forfeitGame = () => {
+    const data = {
+      game: {
+        winner_id: game.player1_id,
+        turn: "gameEnded"
+      },
+    };
+    fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`, {
+      method: "put",
+      headers: {
+        Authorization: `${tokenCookie}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+  }
+
+
+
   return (
     <div className="game_page">
+      { userId == game.player1_id && (
+        <Prompt
+          message={() => 'Si vous quittez cette page la partie sera perdue !'}
+        />
+      )}
+      { userId == game.player2_id && (
+        <Prompt
+          message={() => 'Si vous quittez cette page, vous serez automatiquement déclaré forfait !'}
+        />
+      )}
+
       <ModalDiv modalIsOpen={modalIsOpen} closeModal={closeModal} step={currentStep}/>
-      {gameOn && (
+      {((gameOn && userId == game.player2_id && game.turn == "player2") || (gameOn && userId == game.player1_id && !game.turn)) && (
         <>
           <Countdown onExpire = {nextQuestion} resetTick = {currentQuestionIndex}/>
           <QuestionCard
