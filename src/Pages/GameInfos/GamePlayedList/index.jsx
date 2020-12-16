@@ -43,10 +43,10 @@ const GamePlayedList = () => {
   useEffect(() => {
     let player_stats = {
       games_played: gamesPlayedStats.length,
-      games_won: gamesPlayedStats.filter((game) => game.winner_id === userId)
+      games_won: gamesPlayedStats.filter((game) => game.winner_id == userId)
         .length,
       games_lost: gamesPlayedStats.filter(
-        (game) => game.winner_id !== userId && game.winner_id !== null
+        (game) => game.winner_id != userId && game.winner_id !== null
       ).length,
     };
     setPlayerStats(player_stats);
@@ -94,10 +94,7 @@ const GamePlayedList = () => {
                   key={game.id}
                 />
               );
-            } else if (
-              game.winner_id == userId &&
-              game.player2_id == userId
-            ) {
+            } else if (game.winner_id == userId && game.player2_id == userId) {
               return (
                 <GamePlayed
                   gameId={game.id}

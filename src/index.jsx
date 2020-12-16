@@ -11,6 +11,8 @@ import GameInfos from "./Pages/GameInfos";
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
 import { PersistGate } from "redux-persist/integration/react";
+import Victory from "./Pages/Victory";
+import Defeat from "./Pages/Defeat";
 
 const App = () => {
   return (
@@ -34,6 +36,12 @@ const App = () => {
               </Route>
               <Route path="/game/:id">
                 <GamePage />
+              </Route>
+              <Route path="/games/:id/victory">
+                <Victory />
+              </Route>
+              <Route path="/games/:id/defeat">
+                <Defeat />
               </Route>
             </Switch>
             <Footer />

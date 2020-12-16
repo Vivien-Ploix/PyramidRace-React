@@ -83,6 +83,7 @@ const SearchBar = () => {
                 onClick={() => {
                   startGame(suggestion.id);
                 }}
+                key={suggestion.id}
               />
             );
           }
