@@ -11,7 +11,7 @@ const Footer = () => {
             <div className="col-lg-12">
               <div className="copyright text-center">
                 <p className="text">
-                  THP Project by <Link to="/team">Les Incacahuète !</Link>
+                  THP Project by <Link to="/team">Les Incacahuètes !</Link>
                 </p>
               </div>
             </div>

@@ -1,9 +1,9 @@
 .team-boxed {
   color: #313437;
-  background-color: #eef4f7;
+  background-color: white;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
 }
 
 .team-boxed p {
@@ -75,18 +75,17 @@
   max-width: 160px;
 }
 
-.team-boxed .social {
-  font-size: 18px;
-  color: #a2a8ae;
+.box {
+  background-color: #eef4f7;
+  margin: 20px;
+  min-width: 22%;
+  height: auto;
+  padding: 20px;
+  border-radius: 50px;
 }
 
-.team-boxed .social a {
-  color: inherit;
-  margin: 0 10px;
-  display: inline-block;
-  opacity: 0.7;
-}
-
-.team-boxed .social a:hover {
-  opacity: 1;
+.people {
+  max-width: 100%;
+  justify-content: center;
+  padding-left: 20px;
 }

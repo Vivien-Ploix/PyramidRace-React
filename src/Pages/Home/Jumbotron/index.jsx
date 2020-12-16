@@ -9,6 +9,8 @@ const Jumbotron = () => {
   const tokenCookie = Cookie.get("token");
   const history = useHistory();
   const [possibleOpponents, setPossibleOpponents] = useState([]);
+  const [playerScore, setPlayerScore] = useState(0);
+
   const categoriesArray = [
     9,
     10,
@@ -51,6 +53,15 @@ const Jumbotron = () => {
   }, [possibleOpponents]);
 
   const startGame = () => {
+    let difficulty;
+    if (playerScore < 200) {
+      difficulty = "easy";
+    } else if (playerScore >= 200 && playerScore < 400) {
+      difficulty = "medium";
+    } else if (playerScore >= 400) {
+      difficulty = "hard";
+    }
+    console.log(difficulty);
     const data = {
       game: {
         player1_id: userId,
@@ -58,7 +69,7 @@ const Jumbotron = () => {
           possibleOpponents[
             Math.floor(Math.random() * possibleOpponents.length)
           ].id,
-        difficulty: "medium",
+        difficulty: difficulty,
         category:
           categoriesArray[Math.floor(Math.random() * categoriesArray.length)],
       },
@@ -78,6 +89,24 @@ const Jumbotron = () => {
         history.push(`/game/${response.id}`);
       });
   };
+
+  const fetchPlayerScore = () => {
+    fetch(`https://pyramid-race-api.herokuapp.com/users/${userId}/games`)
+      .then((response) => response.json())
+      .then((data) => {
+        let games_won = data.filter((game) => game.winner_id == userId).length;
+        let games_lost = data.filter(
+          (game) => game.winner_id != userId && game.winner_id !== null
+        ).length;
+        let playerScore = games_won * 5 - games_lost * 3;
+        setPlayerScore(playerScore);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    fetchPlayerScore();
+  }, []);
 
   return (
     <div

@@ -11,6 +11,7 @@ const SearchBar = () => {
   const tokenCookie = Cookie.get("token");
   const history = useHistory();
   const [suggestions, setSuggestions] = useState([]);
+  const [playerScore, setPlayerScore] = useState(0);
 
   //Enables selecting the range of categories in the API and excluding the ones not containing enough questions
   const arrayQuestions = [...Array(32 - 9 + 1)].map((item, index) => 9 + index);
@@ -41,11 +42,20 @@ const SearchBar = () => {
   };
 
   const startGame = (opponentId) => {
+    let difficulty;
+    if (playerScore < 200) {
+      difficulty = "easy";
+    } else if (playerScore >= 200 && playerScore < 400) {
+      difficulty = "medium";
+    } else if (playerScore >= 400) {
+      difficulty = "hard";
+    }
+    console.log(difficulty);
     const data = {
       game: {
         player1_id: userId,
         player2_id: opponentId,
-        difficulty: "medium",
+        difficulty: difficulty,
         category:
           categoriesArray[Math.floor(Math.random() * categoriesArray.length)],
       },
@@ -64,6 +74,24 @@ const SearchBar = () => {
         history.push(`/game/${response.id}`);
       });
   };
+
+  const fetchPlayerScore = () => {
+    fetch(`https://pyramid-race-api.herokuapp.com/users/${userId}/games`)
+      .then((response) => response.json())
+      .then((data) => {
+        let games_won = data.filter((game) => game.winner_id == userId).length;
+        let games_lost = data.filter(
+          (game) => game.winner_id != userId && game.winner_id !== null
+        ).length;
+        let playerScore = games_won * 5 - games_lost * 3;
+        setPlayerScore(playerScore);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    fetchPlayerScore();
+  }, []);
 
   return (
     <div className="container searchbar navbar-form">

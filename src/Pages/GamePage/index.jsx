@@ -19,7 +19,6 @@ const Game = () => {
   const tokenCookie = Cookie.get("token");
   const [game, setGame] = useState({});
   const [questions, setQuestions] = useState([]);
-  const [count, setCount] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState({});
   const [gameOn, setGameOn] = useState(false);
@@ -32,7 +31,9 @@ const Game = () => {
   const [firstGameHistory, setFirstGameHistory] = useState({});
   const history = useHistory();
   const pyramidRef = useRef();
+  const [count, setCount] = useState(0);
   const [count2, setCount2] = useState(0);
+  const [count3, setCount3] = useState(0);
   const [timePlayer1, setTimePlayer1] = useState(0);
   const [timePlayer2, setTimePlayer2] = useState(0);
 
@@ -217,13 +218,21 @@ const Game = () => {
         nextTurn();
         openModal();
       } else if (userId == game.player2_id) {
-        let testTime = Date.now() - timePlayer1;
-        console.log(testTime);
-        setTimePlayer1(Date.now() - timePlayer1);
-        setTimeout(gameEnd(), 200);
+        let totalTime = Date.now() - timePlayer1;
+        console.log(totalTime);
+        setTimePlayer1(totalTime);
       }
     }
   };
+
+  useEffect(() => {
+    console.log("tesssttttttt");
+    if (count3 === 2) {
+      console.log(timePlayer1);
+      gameEnd();
+    }
+    setCount3(count3 + 1);
+  }, [timePlayer1]);
 
   // Prompt before leaving page
 
@@ -324,9 +333,9 @@ const Game = () => {
     console.log(startOpponentGame);
     console.log(endOpponentGame);
     const totalTimeOpponent = endOpponentGame - startOpponentGame;
+    console.log(totalTimeOpponent);
     setTimePlayer2(totalTimeOpponent);
     gameHistories.forEach((game_history) => {
-      console.log(Date.parse(game_history.response_time) - startOpponentGame);
       console.log(game_history.response_correct);
       setTimeout(function () {
         if (game_history.response_correct) {
