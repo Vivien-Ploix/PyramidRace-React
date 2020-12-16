@@ -1,7 +1,9 @@
 import React from "react";
 import "./style.scss";
+import ProgressBar from "./ProgressBar/index";
 
 const PlayerInfos = ({ player_stats }) => {
+  const playerScore = player_stats.games_won * 5 - player_stats.games_lost * 3;
   return (
     <div className="card card-profil">
       <img
@@ -9,9 +11,10 @@ const PlayerInfos = ({ player_stats }) => {
         src="https://i.pinimg.com/originals/01/f5/53/01f553f33d606119eef6ed32476842be.jpg"
         alt=""
       ></img>
-
-      <div className="card-body card-profil__content">
+      <div className="card-body card-profil__content text-center">
         <h3 className="card-title card-profil__title">Mes statistiques</h3>
+        <ProgressBar playerScore={playerScore} />
+
         <p className="card-text">
           Nombre de parties : {player_stats.games_played}
           <br></br>

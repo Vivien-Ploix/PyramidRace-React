@@ -1,5 +1,6 @@
 import React from "react";
 import "./style.scss";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -10,7 +11,7 @@ const Footer = () => {
             <div className="col-lg-12">
               <div className="copyright text-center">
                 <p className="text">
-                  THP Project by Anthony KRIEF, Vivien PLOIX et Olivier FITOUSSI
+                  THP Project by <Link to="/team">Les Incacahuètes !</Link>
                 </p>
               </div>
             </div>

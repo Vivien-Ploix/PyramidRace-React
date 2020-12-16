@@ -11,6 +11,7 @@ import Countdown from "./Countdown/index";
 import ModalDiv from "./Modal/index";
 import { motion } from "framer-motion";
 import { Prompt } from "react-router-dom";
+import { updateScorePlayer } from "../../Components/Fetch/index";
 
 const Game = () => {
   let { id } = useParams();
@@ -18,7 +19,6 @@ const Game = () => {
   const tokenCookie = Cookie.get("token");
   const [game, setGame] = useState({});
   const [questions, setQuestions] = useState([]);
-  const [count, setCount] = useState(0);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState({});
   const [gameOn, setGameOn] = useState(false);
@@ -31,7 +31,11 @@ const Game = () => {
   const [firstGameHistory, setFirstGameHistory] = useState({});
   const history = useHistory();
   const pyramidRef = useRef();
+  const [count, setCount] = useState(0);
   const [count2, setCount2] = useState(0);
+  const [count3, setCount3] = useState(0);
+  const [timePlayer1, setTimePlayer1] = useState(0);
+  const [timePlayer2, setTimePlayer2] = useState(0);
 
   const openModal = () => {
     setIsOpen(true);
@@ -46,6 +50,7 @@ const Game = () => {
     if (questions.length === 12) {
       setCurrentQuestion(questions[currentQuestionIndex]);
       setGameOn(true);
+      setTimePlayer1(Date.now());
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     }
   }, [questions]);
@@ -53,8 +58,6 @@ const Game = () => {
   useEffect(() => {
     fetchGame();
   }, []);
-
-  useEffect(() => {}, [newQuestionTime]);
 
   useEffect(() => {
     setCount(count + 1);
@@ -92,25 +95,34 @@ const Game = () => {
       .catch((error) => console.log(error));
   };
 
-  const gameEnd = () => {
-    let player1_correct_answers = gameHistories.filter(
-      (game_history) => game_history.response_correct === true
-    ).length;
-    let player1_wrong_answers = gameHistories.filter(
-      (game_history) => game_history.response_correct !== true
-    ).length;
-    let player1_step = player1_correct_answers - player1_wrong_answers;
+  const gameEnd = (firstWinnerId) => {
     let winner_id;
-    if (player1_step >= currentStep) {
-      winner_id = game.player1_id;
+    console.log(timePlayer1);
+    console.log(timePlayer2);
+    if (!firstWinnerId) {
+      let player1_correct_answers = gameHistories.filter(
+        (game_history) => game_history.response_correct === true
+      ).length;
+      let player1_wrong_answers = gameHistories.filter(
+        (game_history) => game_history.response_correct !== true
+      ).length;
+      let player1_step = player1_correct_answers - player1_wrong_answers;
+      if (player1_step > currentStep) {
+        winner_id = game.player1_id;
+      } else if (player1_step < currentStep) {
+        winner_id = game.player2_id;
+      } else if (player1_step === currentStep) {
+        if (timePlayer1 >= timePlayer2) {
+          winner_id = game.player2_id;
+        } else if (timePlayer1 < timePlayer2) {
+          winner_id = game.player1_id;
+        }
+      }
     } else {
-      winner_id = game.player2_id;
+      winner_id = firstWinnerId;
     }
-    console.log(player1_correct_answers);
-    console.log(player1_wrong_answers);
-    console.log(player1_step);
-    console.log(winner_id);
 
+    console.log(winner_id);
     const data = {
       game: {
         winner_id: winner_id,
@@ -185,7 +197,7 @@ const Game = () => {
         nextTurn();
         openModal();
       } else if (userId == game.player2_id) {
-        gameEnd();
+        gameEnd(game.player2_id);
       }
     } else if (
       (!answer_choice && currentStep > 0) ||
@@ -206,10 +218,21 @@ const Game = () => {
         nextTurn();
         openModal();
       } else if (userId == game.player2_id) {
-        gameEnd();
+        let totalTime = Date.now() - timePlayer1;
+        console.log(totalTime);
+        setTimePlayer1(totalTime);
       }
     }
   };
+
+  useEffect(() => {
+    console.log("tesssttttttt");
+    if (count3 === 2) {
+      console.log(timePlayer1);
+      gameEnd();
+    }
+    setCount3(count3 + 1);
+  }, [timePlayer1]);
 
   // Prompt before leaving page
 
@@ -295,6 +318,8 @@ const Game = () => {
           x: step * marchWidth - marchWidth / 1.3,
           y: -5 * marchHeight - groundHeight,
         });
+        setGameOn(false);
+        gameEnd(game.player1_id);
       }
     }
   };
@@ -302,8 +327,15 @@ const Game = () => {
   const movePlayer2 = () => {
     let step = 0;
     const startOpponentGame = Date.parse(gameHistories[0].question_time);
+    const endOpponentGame = Date.parse(
+      gameHistories[gameHistories.length - 1].response_time
+    );
+    console.log(startOpponentGame);
+    console.log(endOpponentGame);
+    const totalTimeOpponent = endOpponentGame - startOpponentGame;
+    console.log(totalTimeOpponent);
+    setTimePlayer2(totalTimeOpponent);
     gameHistories.forEach((game_history) => {
-      console.log(Date.parse(game_history.response_time) - startOpponentGame);
       console.log(game_history.response_correct);
       setTimeout(function () {
         if (game_history.response_correct) {
