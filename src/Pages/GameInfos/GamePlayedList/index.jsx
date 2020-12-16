@@ -1,8 +1,8 @@
+import "./style.scss";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import GamePlayed from "./GamePlayed";
 import PlayerInfos from "./../PlayerInfos";
-import "./style.scss";
 
 const GamePlayedList = () => {
   const userId = useSelector((state) => state.id);
@@ -59,6 +59,7 @@ const GamePlayedList = () => {
         <br />
         <div className="list-container">
           {gamesToPlay.map((game) => {
+            console.log(game);
             if (game.winner_id === null && game.player1_id == userId) {
               return (
                 <GamePlayed
@@ -133,7 +134,7 @@ const GamePlayedList = () => {
           })}
         </div>
       </div>
-      <div className="game-info-column col-lg-3 player-infos-col">
+      <div className="game-info-column col-lg-3 player-infos-col text-center">
         <PlayerInfos player_stats={playerStats} />
       </div>
     </div>

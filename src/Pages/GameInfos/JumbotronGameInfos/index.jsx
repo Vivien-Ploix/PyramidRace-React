@@ -12,7 +12,7 @@ const JumbotronGameInfos = () => {
       style={{ backgroundImage: `url(${"assets/images/header-bg.jpg"})` }}
     >
       <div className="container">
-        <div className="row justify-content-center">
+        <div className="row justify-content-center jumbotron-container">
           <div className="col-xl-8 col-lg-10">
             <div className="header-content text-center">
               <h3 className="header-title">Bonjour {userPseudo}</h3>
