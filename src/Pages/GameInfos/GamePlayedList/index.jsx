@@ -59,7 +59,6 @@ const GamePlayedList = () => {
         <br />
         <div className="list-container">
           {gamesToPlay.map((game) => {
-            console.log(game);
             if (game.winner_id === null && game.player1_id === userId) {
               return (
                 <GamePlayed

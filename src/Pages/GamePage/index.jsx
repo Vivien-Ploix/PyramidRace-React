@@ -49,6 +49,7 @@ const Game = () => {
   useEffect(() => {
     if (questions.length === 12) {
       setCurrentQuestion(questions[currentQuestionIndex]);
+      console.log("game oooooooooooooooooooooooooon");
       setGameOn(true);
       setTimePlayer1(Date.now());
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -67,9 +68,9 @@ const Game = () => {
       fetchQuestions();
     }
     return () => {
-      if (game){
-        console.log("test usablecallback")
-        userId === game.player1_id ? destroyGame() : forfeitGame();      
+      if (game && count === 2 && gameOn) {
+        console.log("test usablecallback");
+        userId === game.player1_id ? destroyGame() : forfeitGame();
       }
     };
   }, [count, game]);
@@ -98,7 +99,6 @@ const Game = () => {
       .then((response) => response.json())
       .then((data) => {
         setGameHistories(data);
-        console.log(data[0]);
         setFirstGameHistory(data[0]);
       })
       .catch((error) => console.log(error));
@@ -106,8 +106,6 @@ const Game = () => {
 
   const gameEnd = (firstWinnerId) => {
     let winner_id;
-    console.log(timePlayer1);
-    console.log(timePlayer2);
     if (!firstWinnerId) {
       let player1_correct_answers = gameHistories.filter(
         (game_history) => game_history.response_correct === true
@@ -131,7 +129,6 @@ const Game = () => {
       winner_id = firstWinnerId;
     }
 
-    console.log(winner_id);
     const data = {
       game: {
         winner_id: winner_id,
@@ -203,6 +200,7 @@ const Game = () => {
     ) {
       setCurrentStep(currentStep + 1);
       setGameOn(false);
+      console.log("game ooooooooooooooof");
       setCurrentQuestion({});
       if (userId === game.player1_id) {
         nextTurn();
@@ -223,6 +221,7 @@ const Game = () => {
       setNewQuestionTime(new Date(Date.now()));
     } else {
       setGameOn(false);
+      console.log("game ooooof 22222");
       setCurrentQuestion({});
       setCurrentQuestionIndex("");
       if (userId === game.player1_id) {
@@ -230,16 +229,16 @@ const Game = () => {
         openModal();
       } else if (userId === game.player2_id) {
         let totalTime = Date.now() - timePlayer1;
-        console.log(totalTime);
         setTimePlayer1(totalTime);
       }
     }
   };
+  useEffect(() => {
+    console.log(gameOn);
+  }, [gameOn]);
 
   useEffect(() => {
-    console.log("tesssttttttt");
     if (count3 === 2) {
-      console.log(timePlayer1);
       gameEnd();
     }
     setCount3(count3 + 1);
@@ -286,7 +285,6 @@ const Game = () => {
     if (!pyramidRef.current) {
       return;
     }
-    console.log("movePlayer1 launched");
     const pyramidHeight = pyramidRef.current.getBoundingClientRect().height;
     const pyramidWidth = pyramidRef.current.getBoundingClientRect().width;
     const marchHeight = pyramidHeight / 6.57;
@@ -317,13 +315,19 @@ const Game = () => {
           y: -5 * marchHeight - groundHeight,
         });
         setGameOn(false);
+        console.log("game ooooooooooooooooof 3");
         gameEnd(game.player1_id);
       }
     }
   };
 
   const movePlayer2 = () => {
-    console.log("movePlayer2 initialization");
+    if (!pyramidRef.current) {
+      return;
+    }
+    const pyramidHeight = pyramidRef.current.getBoundingClientRect().height;
+    const groundHeight = pyramidHeight / 100;
+
     let step = 0;
     const startOpponentGame = Date.parse(gameHistories[0].question_time);
     const endOpponentGame = Date.parse(
@@ -338,14 +342,19 @@ const Game = () => {
         } else if (step > 0 && !game_history.response_correct) {
           step -= 1;
         }
-        movePlayer1(-step);
-        console.log("setTimeout working");
+        if (step > 0) {
+          movePlayer1(-step);
+        } else if (step === 0) {
+          setPerso2Animation({
+            x: 0,
+            y: -groundHeight,
+          });
+        }
       }, Date.parse(game_history.response_time) - startOpponentGame);
     });
   };
 
   useEffect(() => {
-    console.log("current step : ", currentStep);
     movePlayer1(currentStep);
   }, [currentStep]);
 
@@ -355,7 +364,6 @@ const Game = () => {
 
   useEffect(() => {
     console.log(gameHistories);
-    console.log(firstGameHistory);
     setCount2(count2 + 1);
     if (count2 === 1) {
       movePlayer2();
