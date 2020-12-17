@@ -6,7 +6,8 @@ const tokenCookie = Cookie.get("token");
 export const fetchOpponent = (playerId, setOpponent) => {
   fetch(`https://pyramid-race-api.herokuapp.com/users/${playerId}`)
     .then((response) => response.json())
-    .then((data) => setOpponent(data));
+    .then((data) => setOpponent(data))
+    .catch((error) => console.log(error));
 };
 
 export const updateScorePlayer = (playerId, initialScore, victoryStatus) => {
@@ -28,5 +29,5 @@ export const updateScorePlayer = (playerId, initialScore, victoryStatus) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
-  });
+  }).catch((error) => console.log(error));
 };

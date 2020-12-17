@@ -62,10 +62,20 @@ const Game = () => {
   useEffect(() => {
     setCount(count + 1);
     if (count === 1) {
-      if (userId == game.player2_id) {
+      if (userId === game.player2_id) {
         fetchHistoryPlayer1();
       }
       fetchQuestions();
+      const usableCallback = () =>
+        userId === game.player1_id ? destroyGame() : forfeitGame();
+
+      window.addEventListener("beforeunload", alertUser);
+      window.addEventListener("unload", usableCallback);
+
+      return () => {
+        window.removeEventListener("beforeunload", alertUser);
+        window.removeEventListener("unload", usableCallback);
+      };
     }
   }, [game]);
 
@@ -136,13 +146,16 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((response) => {
-      if (userId == winner_id) {
-        history.push(`/games/${id}/victory`);
-      } else if (userId != winner_id) {
-        history.push(`/games/${id}/defeat`);
-      }
-    });
+    })
+      .then((response) => {
+        if (userId === winner_id) {
+          history.push(`/games/${id}/victory`);
+        } else if (userId != winner_id) {
+          history.push(`/games/${id}/defeat`);
+        }
+      })
+      .catch((error) => console.log(error));
+
   };
 
   const nextTurn = () => {
@@ -158,7 +171,8 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    });
+    }).catch((error) => console.log(error));
+
   };
 
   const nextQuestion = (answer_choice, correct_answer) => {
@@ -181,7 +195,8 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    });
+    }).catch((error) => console.log(error));
+
 
     if (answer_choice && answer_choice === correct_answer && currentStep < 5) {
       setCurrentStep(currentStep + 1);
@@ -193,10 +208,10 @@ const Game = () => {
       setCurrentStep(currentStep + 1);
       setGameOn(false);
       setCurrentQuestion({});
-      if (userId == game.player1_id) {
+      if (userId === game.player1_id) {
         nextTurn();
         openModal();
-      } else if (userId == game.player2_id) {
+      } else if (userId === game.player2_id) {
         gameEnd(game.player2_id);
       }
     } else if (
@@ -214,10 +229,10 @@ const Game = () => {
       setGameOn(false);
       setCurrentQuestion({});
       setCurrentQuestionIndex("");
-      if (userId == game.player1_id) {
+      if (userId === game.player1_id) {
         nextTurn();
         openModal();
-      } else if (userId == game.player2_id) {
+      } else if (userId === game.player2_id) {
         let totalTime = Date.now() - timePlayer1;
         console.log(totalTime);
         setTimePlayer1(totalTime);
@@ -234,28 +249,13 @@ const Game = () => {
     setCount3(count3 + 1);
   }, [timePlayer1]);
 
-  // Prompt before leaving page
-
-  // useEffect(() => {
-
-  //   const usableCallback = () => (
-  //     userId == game.player1_id ? destroyGame() : forfeitGame()
-  //   );
-
-  //   window.addEventListener('beforeunload', alertUser)
-  //   window.addEventListener('unload', usableCallback)
-
-  //   return () => {
-  //     window.removeEventListener('beforeunload', alertUser)
-  //     window.removeEventListener('unload', usableCallback)
-  //   }
-  // }, [])
-
   const alertUser = (e) => {
     e.preventDefault();
     e.returnValue = "";
   };
+
   const destroyGame = () => {
+    console.log("test destroy");
     if (!gameOn) {
       return;
     }
@@ -265,10 +265,12 @@ const Game = () => {
         Authorization: `${tokenCookie}`,
         "Content-Type": "application/json",
       },
-    });
+    }).catch((error) => console.log(error));
+
   };
 
   const forfeitGame = () => {
+    console.log("test forfeit");
     if (!gameOn) {
       return;
     }
@@ -285,10 +287,12 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    });
+    }).catch((error) => console.log(error));
+
   };
 
   const movePlayer1 = (step) => {
+    console.log("movePlayer1 launched");
     const pyramidHeight = pyramidRef.current.getBoundingClientRect().height;
     const pyramidWidth = pyramidRef.current.getBoundingClientRect().width;
     const marchHeight = pyramidHeight / 6.57;
@@ -325,31 +329,29 @@ const Game = () => {
   };
 
   const movePlayer2 = () => {
+    console.log("movePlayer2 initialization");
     let step = 0;
     const startOpponentGame = Date.parse(gameHistories[0].question_time);
     const endOpponentGame = Date.parse(
       gameHistories[gameHistories.length - 1].response_time
     );
-    console.log(startOpponentGame);
-    console.log(endOpponentGame);
     const totalTimeOpponent = endOpponentGame - startOpponentGame;
-    console.log(totalTimeOpponent);
     setTimePlayer2(totalTimeOpponent);
     gameHistories.forEach((game_history) => {
-      console.log(game_history.response_correct);
       setTimeout(function () {
         if (game_history.response_correct) {
           step += 1;
-        } else {
+        } else if (step > 0 && !game_history.response_correct) {
           step -= 1;
         }
         movePlayer1(-step);
+        console.log("setTimeout working");
       }, Date.parse(game_history.response_time) - startOpponentGame);
     });
   };
 
   useEffect(() => {
-    console.log(currentStep);
+    console.log("current step : ", currentStep);
     movePlayer1(currentStep);
   }, [currentStep]);
 
@@ -375,12 +377,12 @@ const Game = () => {
 
   return (
     <div className="game_page">
-      {userId == game.player1_id && gameOn && (
+      {userId === game.player1_id && gameOn && (
         <Prompt
           message={() => "Si vous quittez cette page la partie sera perdue !"}
         />
       )}
-      {userId == game.player2_id && gameOn && (
+      {userId === game.player2_id && gameOn && (
         <Prompt
           message={() =>
             "Si vous quittez cette page, vous serez automatiquement déclaré forfait !"
@@ -393,8 +395,8 @@ const Game = () => {
         closeModal={closeModal}
         step={currentStep}
       />
-      {((gameOn && userId == game.player2_id && game.turn == "player2") ||
-        (gameOn && userId == game.player1_id && game.turn === "player1")) && (
+      {((gameOn && userId === game.player2_id && game.turn === "player2") ||
+        (gameOn && userId === game.player1_id && game.turn === "player1")) && (
         <>
           <Countdown onExpire={nextQuestion} resetTick={currentQuestionIndex} />
           <QuestionCard

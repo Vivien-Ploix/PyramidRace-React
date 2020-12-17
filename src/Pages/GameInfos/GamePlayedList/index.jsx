@@ -43,7 +43,7 @@ const GamePlayedList = () => {
   useEffect(() => {
     let player_stats = {
       games_played: gamesPlayedStats.length,
-      games_won: gamesPlayedStats.filter((game) => game.winner_id == userId)
+      games_won: gamesPlayedStats.filter((game) => game.winner_id === userId)
         .length,
       games_lost: gamesPlayedStats.filter(
         (game) => game.winner_id != userId && game.winner_id !== null
@@ -60,7 +60,7 @@ const GamePlayedList = () => {
         <div className="list-container">
           {gamesToPlay.map((game) => {
             console.log(game);
-            if (game.winner_id === null && game.player1_id == userId) {
+            if (game.winner_id === null && game.player1_id === userId) {
               return (
                 <GamePlayed
                   gameId={game.id}
@@ -69,7 +69,7 @@ const GamePlayedList = () => {
                   key={game.id}
                 />
               );
-            } else if (game.winner_id === null && game.player2_id == userId) {
+            } else if (game.winner_id === null && game.player2_id === userId) {
               return (
                 <GamePlayed
                   gameId={game.id}
@@ -86,7 +86,7 @@ const GamePlayedList = () => {
         <br />
         <div className="list-container">
           {gamesPlayed.map((game) => {
-            if (game.winner_id == userId && game.player1_id == userId) {
+            if (game.winner_id === userId && game.player1_id === userId) {
               return (
                 <GamePlayed
                   gameId={game.id}
@@ -95,19 +95,9 @@ const GamePlayedList = () => {
                   key={game.id}
                 />
               );
-            } else if (game.winner_id == userId && game.player2_id == userId) {
-              return (
-                <GamePlayed
-                  gameId={game.id}
-                  opponentId={game.player1_id}
-                  winner_id={game.winner_id}
-                  key={game.id}
-                />
-              );
             } else if (
-              game.winner_id &&
-              game.winner_id !== userId &&
-              game.player2_id == userId
+              game.winner_id === userId &&
+              game.player2_id === userId
             ) {
               return (
                 <GamePlayed
@@ -120,7 +110,20 @@ const GamePlayedList = () => {
             } else if (
               game.winner_id &&
               game.winner_id !== userId &&
-              game.player1_id == userId
+              game.player2_id === userId
+            ) {
+              return (
+                <GamePlayed
+                  gameId={game.id}
+                  opponentId={game.player1_id}
+                  winner_id={game.winner_id}
+                  key={game.id}
+                />
+              );
+            } else if (
+              game.winner_id &&
+              game.winner_id !== userId &&
+              game.player1_id === userId
             ) {
               return (
                 <GamePlayed
