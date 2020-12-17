@@ -11,7 +11,6 @@ import Countdown from "./Countdown/index";
 import ModalDiv from "./Modal/index";
 import { motion } from "framer-motion";
 import { Prompt } from "react-router-dom";
-import { updateScorePlayer } from "../../Components/Fetch/index";
 
 const Game = () => {
   let { id } = useParams();
@@ -68,7 +67,7 @@ const Game = () => {
       fetchQuestions();
     }
     return () => {
-      if (game && count === 2 && gameOn) {
+      if (game && count === 2) {
         console.log("test usablecallback");
         userId === game.player1_id ? destroyGame() : forfeitGame();
       }
@@ -261,10 +260,11 @@ const Game = () => {
   };
 
   const forfeitGame = () => {
+    // if (!gameOn) {
+    //   return;
+    // }
     console.log("test forfeit");
-    if (!gameOn) {
-      return;
-    }
+
     const data = {
       game: {
         winner_id: game.player1_id,
