@@ -60,23 +60,22 @@ const Game = () => {
   }, []);
 
   useEffect(() => {
-    setCount(count + 1);
-    if (count === 1) {
+    if (game && count === 2) {
       if (userId === game.player2_id) {
         fetchHistoryPlayer1();
       }
       fetchQuestions();
-      const usableCallback = () =>
-        userId === game.player1_id ? destroyGame() : forfeitGame();
-
-      window.addEventListener("beforeunload", alertUser);
-      window.addEventListener("unload", usableCallback);
-
-      return () => {
-        window.removeEventListener("beforeunload", alertUser);
-        window.removeEventListener("unload", usableCallback);
-      };
     }
+    return () => {
+      if (game){
+        console.log("test usablecallback")
+        userId === game.player1_id ? destroyGame() : forfeitGame();      
+      }
+    };
+  }, [count, game]);
+
+  useEffect(() => {
+    setCount(count + 1);
   }, [game]);
 
   const fetchGame = () => {
@@ -155,7 +154,6 @@ const Game = () => {
         }
       })
       .catch((error) => console.log(error));
-
   };
 
   const nextTurn = () => {
@@ -172,7 +170,6 @@ const Game = () => {
       },
       body: JSON.stringify(data),
     }).catch((error) => console.log(error));
-
   };
 
   const nextQuestion = (answer_choice, correct_answer) => {
@@ -196,7 +193,6 @@ const Game = () => {
       },
       body: JSON.stringify(data),
     }).catch((error) => console.log(error));
-
 
     if (answer_choice && answer_choice === correct_answer && currentStep < 5) {
       setCurrentStep(currentStep + 1);
@@ -256,9 +252,6 @@ const Game = () => {
 
   const destroyGame = () => {
     console.log("test destroy");
-    if (!gameOn) {
-      return;
-    }
     fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`, {
       method: "delete",
       headers: {
@@ -266,7 +259,6 @@ const Game = () => {
         "Content-Type": "application/json",
       },
     }).catch((error) => console.log(error));
-
   };
 
   const forfeitGame = () => {
@@ -288,10 +280,12 @@ const Game = () => {
       },
       body: JSON.stringify(data),
     }).catch((error) => console.log(error));
-
   };
 
   const movePlayer1 = (step) => {
+    if (!pyramidRef.current) {
+      return;
+    }
     console.log("movePlayer1 launched");
     const pyramidHeight = pyramidRef.current.getBoundingClientRect().height;
     const pyramidWidth = pyramidRef.current.getBoundingClientRect().width;
