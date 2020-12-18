@@ -3,11 +3,28 @@
   top: 100px;
   z-index: 1;
   left: 10px;
-  max-width: 500px;
+  width: 25%;
+  margin: 0;
+  border: none;
+  border-radius: 5%;
+  color: rgba(0, 0, 0, 1);
+  letter-spacing: 0.05rem;
+  font-family: "Oswald", sans-serif;
+  box-shadow: 0 0 21px rgba(0, 0, 0, 0.27);
+  background-color: white;
 }
 
 .answer-button {
-  min-width: 200px;
-  max-width: 200px;
   margin: 10px;
+  width: 40%;
+  background-color: #ff8c00;
+  text-align: center;
+}
+
+.answers {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
 }

@@ -49,9 +49,9 @@ const Game = () => {
     if (questions.length === 12) {
       setCurrentQuestion(questions[currentQuestionIndex]);
       console.log("game oooooooooooooooooooooooooon");
-      setGameOn(true);
       setTimePlayer1(Date.now());
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setGameOn(true);
     }
   }, [questions]);
 
@@ -66,12 +66,12 @@ const Game = () => {
       }
       fetchQuestions();
     }
-    return () => {
-      if (game && count === 2) {
-        console.log("test usablecallback");
-        userId === game.player1_id ? destroyGame() : forfeitGame();
-      }
-    };
+    // return () => {
+    //   if (game && count === 2) {
+    //     console.log("test usablecallback");
+    //     userId === game.player1_id ? destroyGame() : forfeitGame();
+    //   }
+    // };
   }, [count, game]);
 
   useEffect(() => {

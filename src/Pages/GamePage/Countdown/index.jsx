@@ -1,10 +1,11 @@
+import "./style.scss";
 import React, { useEffect } from "react";
 
 import { useCountdownTimer } from "use-countdown-timer";
 
 const Countdown = ({ onExpire, resetTick }) => {
   const { countdown, reset, start } = useCountdownTimer({
-    timer: 1000 * 20000,
+    timer: 1000 * 10,
     autostart: true,
     onExpire,
   });
@@ -17,7 +18,16 @@ const Countdown = ({ onExpire, resetTick }) => {
     start();
   }, [resetTick]);
 
-  return <div className="countdown">Countdown : {countdown / 1000}</div>;
+  return (
+    <div className="countdown-container">
+      <div
+        id="clock-b"
+        class="countdown-circles d-flex flex-wrap justify-content-center pt-4 mb-4"
+      >
+        <span class="h1 font-weight-bold">{countdown / 1000}</span>
+      </div>
+    </div>
+  );
 };
 
 export default Countdown;
