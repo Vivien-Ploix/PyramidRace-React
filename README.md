@@ -38,6 +38,6 @@ Regarde en haut à droite de ta barre de navigation, tu touveras nos réseaux (e
 
 ### Project by
 
-Anthony KRIEF, Vivien PLOIX, Olivier FITOUSSI ( et un grand merci a Cindy notre déssinatrice !)
+Anthony KRIEF, Vivien PLOIX, Olivier FITOUSSI ( et un grand merci a Cindy notre dessinatrice !)
 
 ### Nous espérons que notre jeu vous plaira !
