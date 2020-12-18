@@ -2,7 +2,7 @@
 
 imaginez une pyramide aztèque, en 2D. Chaque joueur se trouve au pied de chaque face (donc, au pied d’un des deux « escaliers ») de 6 marches.
 
-Une série de 12 questions est alors posée et chaque joueur répond (le temps pour répondre est chronométré (avec un max de 10s)) : 1 bonne réponse -> +1 marche, 1 mauvaise réponse (ou dépassement de 10 secondes) -> -1 marches.
+Une série de 12 questions est alors posée et chaque joueur répond (le temps pour répondre est chronométré (avec un max de 10s)) : 1 bonne réponse -> +1 marche, 1 mauvaise réponse (ou dépassement de 10 secondes) -> -1 marche.
 Le premier arrivé en haut (ou le plus haut après les 12 questions) gagne la Pyramid Race et monte son rang!
 
 ## Comment jouer ?
