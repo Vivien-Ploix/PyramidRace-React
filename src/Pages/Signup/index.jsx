@@ -27,9 +27,7 @@ const SignUp = () => {
     })
       .then((response) => {
         for (var pair of response.headers.entries()) {
-          // accessing the entries
           if (pair[0] === "authorization") {
-            // key I'm looking for in this instance
             Cookies.set("token", pair[1]);
           }
         }
@@ -39,7 +37,7 @@ const SignUp = () => {
         dispatch(authSuccess(response));
         history.push("/");
       })
-      .catch((error) => console.log(error));
+      .catch((error) => alert("Vos informations ne sont pas valides"));
   };
 
   return (
@@ -87,7 +85,7 @@ const SignUp = () => {
                         <input
                           type="text"
                           name="pseudo"
-                          placeholder="Tape ton pseudo (Choisi un truc qui en jette sinon on te jette (de la pyramide...)"
+                          placeholder="Tape ton pseudo (Choisis un truc qui en jette sinon on te jette (de la pyramide...)"
                         ></input>
                       </div>
                     </div>
@@ -95,7 +93,7 @@ const SignUp = () => {
                     <div className="col-md-12">
                       <div className="single-form form-group">
                         <input
-                          placeholder="Tape ton mot de passe"
+                          placeholder="Tape ton mot de passe (6 caractères au minimum !)"
                           type="password"
                           name="password"
                         ></input>

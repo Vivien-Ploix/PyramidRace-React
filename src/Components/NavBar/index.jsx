@@ -18,8 +18,6 @@ const NavBar = () => {
       },
     })
       .then((response) => {
-        console.log(response);
-        console.log(Cookies.get("token"));
         Cookies.remove("token");
         dispatch(logoutSuccess());
       })
@@ -61,9 +59,9 @@ const NavBar = () => {
                     <Link to="/">Accueil</Link>
                   </li>
                   <li className="nav-item">
-                    <a className="page-scroll" href="/#information">
+                    <Link to="/#information" className="page-scroll">
                       Informations
-                    </a>
+                    </Link>
                   </li>
                   {tokenCookie && (
                     <>
@@ -115,6 +113,15 @@ const NavBar = () => {
                     >
                       {" "}
                       <i className="lni-instagram-original"></i>
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.youtube.com/watch?v=RLoWrNB0fJE"
+                      target="_blank"
+                    >
+                      {" "}
+                      <i className="lni lni-youtube"></i>
                     </a>
                   </li>
                 </ul>

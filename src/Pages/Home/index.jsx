@@ -1,6 +1,6 @@
 import React from "react";
-import Jumbotron from "../../Components/Jumbotron";
-import HomeSection from "../../Components/HomeSection";
+import Jumbotron from "./Jumbotron";
+import HomeSection from "./HomeSection";
 
 const Home = () => {
   return (

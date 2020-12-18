@@ -25,9 +25,7 @@ const Login = () => {
     })
       .then((response) => {
         for (var pair of response.headers.entries()) {
-          // accessing the entries
           if (pair[0] === "authorization") {
-            // key I'm looking for in this instance
             Cookies.set("token", pair[1]);
           }
         }
@@ -37,7 +35,7 @@ const Login = () => {
         dispatch(authSuccess(response));
         history.push("/");
       })
-      .catch((error) => console.log(error));
+      .catch((error) => alert("Vos informations sont incorrects"));
   };
   return (
     <div>
