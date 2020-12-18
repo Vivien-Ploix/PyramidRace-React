@@ -30,7 +30,7 @@ const QuestionCard = ({
 
   useEffect(() => {
     shuffle(questionArray);
-    console.log(correct_answer);
+   
   }, [correct_answer]);
 
   return (
