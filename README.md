@@ -1,70 +1,43 @@
-# Getting Started with Create React App
+# Bienvenue sur PyramidRace !!!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+imaginez une pyramide aztèque, en 2D. Chaque joueur se trouve au pied de chaque face (donc, au pied d’un des deux « escaliers ») de 6 marches.
 
-## Available Scripts
+Une série de 12 questions est alors posée et chaque joueur répond (le temps pour répondre est chronométré (avec un max de 10s)) : 1 bonne réponse -> +1 marche, 1 mauvaise réponse (ou dépassement de 10 secondes) -> -1 marches.
+Le premier arrivé en haut (ou le plus haut après les 12 questions) gagne la Pyramid Race et monte son rang!
 
-In the project directory, you can run:
+## Comment jouer ?
 
-### `npm start`
+C'est très simple, il te suffit d'aller à cette adresse et de créer un compte : https://pyramid-race.herokuapp.com/
+Au cas ou tu es curieux, lien de l'API : https://github.com/Vivien-Ploix/PyramidRace-API
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Je préfere le localhost
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Petit curieux que tu es !
+Ok, telecharge notre repo, ouvre le et :
 
-### `npm test`
+- npm install
+- npm start
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Et voila !
 
-### `npm run build`
+### Infos supplémentaires
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Dans Pyramid Race nous avons implémenté un système de rang, il y en a 6 :
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Cafard de la pyramide (T'es assez mauvais)
+- Paysan (Tu t'améliores mais calme toi)
+- Guerrier (Pas mal je commence a te respecter)
+- Grand prêtre (Tu commences a te rapprocher de l'élite mais tu n'as pas encore tout mon respect !)
+- Noble (Tu es dans le top des meilleurs joueurs ! Ok ok, respect)
+- Roi (Rang ultime, tu as prouvé ta valeur et tu te tiens au sommet de la pyramide en regardant les autres avec mépris. Comme moi :) )
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Reseaux Sociaux
 
-### `npm run eject`
+Que serait un jeu sans communauté ?
+Regarde en haut à droite de ta barre de navigation, tu touveras nos réseaux (et une petite vidéo Youtube aussi :p)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Project by
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Anthony KRIEF, Vivien PLOIX, Olivier FITOUSSI ( et un grand merci a Cindy notre déssinatrice !)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Nous espérons que notre jeu vous plaira !

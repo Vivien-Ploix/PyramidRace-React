@@ -26,10 +26,10 @@ const ModalDiv = ({ modalIsOpen, closeModal, step }) => {
       >
         {step < 2 && (
           <div className="col text-center">
-            <h2>Ok, tu as atteint l'étage {step} de la pyramide !</h2>
+            <h2>Meh, tu as atteint l'étage {step} de la pyramide...</h2>
 
             <div>
-              C'est vraiment ridicule, ton adversaire n'aura pas de mal à te
+              C'est vraiment ridicule, ton adversaire n'aura aucun mal à te
               vaincre... va te cacher !
             </div>
             <button className="btn btn-warning" onClick={closeModal}>
@@ -50,7 +50,7 @@ const ModalDiv = ({ modalIsOpen, closeModal, step }) => {
         )}
         {step === 5 && (
           <div className="col text-center">
-            <h2>Tu as atteint l'étage {step} de la pyramide !</h2>
+            <h2>Bravo ! Tu as atteint l'étage {step} de la pyramide !</h2>
             <div>
               Tu finis à une marche du sommet de la pyramide ! Belle
               performance, ton adversaire va devoir se surpasser !

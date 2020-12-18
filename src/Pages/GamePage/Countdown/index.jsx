@@ -1,6 +1,5 @@
 import "./style.scss";
 import React, { useEffect } from "react";
-
 import { useCountdownTimer } from "use-countdown-timer";
 
 const Countdown = ({ onExpire, resetTick }) => {
@@ -22,9 +21,9 @@ const Countdown = ({ onExpire, resetTick }) => {
     <div className="countdown-container">
       <div
         id="clock-b"
-        class="countdown-circles d-flex flex-wrap justify-content-center pt-4 mb-4"
+        className="countdown-circles d-flex flex-wrap justify-content-center pt-4 mb-4"
       >
-        <span class="h1 font-weight-bold">{countdown / 1000}</span>
+        <span className="h3 font-weight-bold">{countdown / 1000}</span>
       </div>
     </div>
   );

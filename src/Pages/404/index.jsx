@@ -1,12 +1,9 @@
 import React from "react";
+import NotFoundImage from "./assets/404.png";
 import "./style.scss";
 
 const NotFound = () => {
-  return (
-    <div className="notFound-page">
-      <h1 className="notFound-title">TU CHERCHES QUOIIIII</h1>
-    </div>
-  );
+  return <img className="notFoundImage" src={NotFoundImage} />;
 };
 
 export default NotFound;

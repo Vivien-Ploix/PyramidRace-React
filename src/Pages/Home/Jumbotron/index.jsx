@@ -56,7 +56,6 @@ const Jumbotron = () => {
     } else if (playerScore >= 400) {
       difficulty = "hard";
     }
-    console.log(difficulty);
     const data = {
       game: {
         player1_id: userId,
@@ -80,7 +79,6 @@ const Jumbotron = () => {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
         history.push(`/games/${response.id}`);
       })
       .catch((error) => console.log(error));

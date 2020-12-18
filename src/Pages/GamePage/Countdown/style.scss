@@ -3,7 +3,8 @@
   display: flex;
   justify-content: center;
   position: absolute;
-  top: 15%;
+  top: 5%;
+  z-index: 1;
 }
 
 .timer {
@@ -17,8 +18,8 @@
 }
 
 .countdown-circles span {
-  width: 100px;
-  height: 100px;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.2);
   display: flex;
@@ -30,8 +31,4 @@
 .countdown-circles span:first-of-type {
   background-color: #ff8c00;
   margin-left: 0;
-}
-
-.rounded {
-  border-radius: 1rem !important;
 }

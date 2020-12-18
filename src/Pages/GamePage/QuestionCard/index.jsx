@@ -7,7 +7,6 @@ const QuestionCard = ({
   correct_answer,
   nextQuestion,
 }) => {
-  console.log(correct_answer);
   const questionArray = incorrect_answers;
   if (questionArray.length < 4) {
     questionArray.push(correct_answer);
@@ -31,6 +30,7 @@ const QuestionCard = ({
 
   useEffect(() => {
     shuffle(questionArray);
+    console.log(correct_answer);
   }, [correct_answer]);
 
   return (

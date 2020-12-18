@@ -51,7 +51,6 @@ const SearchBar = () => {
     } else if (playerScore >= 400) {
       difficulty = "hard";
     }
-    console.log(difficulty);
     const data = {
       game: {
         player1_id: userId,
