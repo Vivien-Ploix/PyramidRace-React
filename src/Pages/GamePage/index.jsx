@@ -11,9 +11,7 @@ import Countdown from "./Countdown/index";
 import ModalDiv from "./Modal/index";
 import { motion } from "framer-motion";
 import { Prompt } from "react-router-dom";
-import ReactAudioPlayer from "react-audio-player";
 import { AudioPlayerProvider } from "react-use-audio-player";
-
 import PyramidRaceAudio from "./assets/PyramidRaceMusicOGG.ogg";
 import AudioPlayer from "../../Components/AudioPlayer/index.jsx";
 
@@ -28,6 +26,7 @@ const Game = () => {
   const [gameOn, setGameOn] = useState(false);
   const [newQuestionTime, setNewQuestionTime] = useState(new Date(Date.now()));
   const [currentStep, setCurrentStep] = useState(0);
+  const [opponentStep, setOpponentStep] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [gameHistories, setGameHistories] = useState([]);
   const [perso1animation, setPerso1Animation] = useState({ x: 0, y: 0 });
@@ -56,7 +55,6 @@ const Game = () => {
   useEffect(() => {
     if (status.current === "questionsFetched") {
       setCurrentQuestion(questions[currentQuestionIndex]);
-      console.log("game oooooooooooooooooooooooooon");
       setTimePlayer1(Date.now());
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setGameOn(true);
@@ -101,9 +99,7 @@ const Game = () => {
         setQuestions(data.results);
         status.current = "questionsFetched";
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => console.log(error));
   };
 
   const fetchHistoryPlayer1 = () => {
@@ -117,31 +113,23 @@ const Game = () => {
   };
 
   const gameEnd = (firstWinnerId) => {
-    console.log("game endedddddd", firstWinnerId);
     let winner_id;
-    if (!firstWinnerId) {
-      let player1_correct_answers = gameHistories.filter(
-        (game_history) => game_history.response_correct === true
-      ).length;
-      let player1_wrong_answers = gameHistories.filter(
-        (game_history) => game_history.response_correct !== true
-      ).length;
-      let player1_step = player1_correct_answers - player1_wrong_answers;
-      if (player1_step > currentStep) {
-        winner_id = game.player1_id;
-      } else if (player1_step < currentStep) {
-        winner_id = game.player2_id;
-      } else if (player1_step === currentStep) {
-        if (timePlayer1 >= timePlayer2) {
-          winner_id = game.player2_id;
-        } else if (timePlayer1 < timePlayer2) {
-          winner_id = game.player1_id;
-        }
-      }
-    } else {
+    if (firstWinnerId) {
       winner_id = firstWinnerId;
+    } else if (currentStep > opponentStep) {
+      winner_id = game.player2_id;
+    } else if (currentStep < opponentStep) {
+      winner_id = game.player1_id;
+    } else if (opponentStep === currentStep) {
+      if (timePlayer1 >= timePlayer2) {
+        winner_id = game.player2_id;
+      } else if (timePlayer1 < timePlayer2) {
+        winner_id = game.player1_id;
+      }
     }
-
+    console.log("currentStep", currentStep);
+    console.log("opponentStep ", opponentStep);
+    console.log("winner_id", winner_id);
     const data = {
       game: {
         winner_id: winner_id,
@@ -159,7 +147,7 @@ const Game = () => {
       .then(() => {
         if (userId === winner_id) {
           history.push(`/games/${id}/victory`);
-        } else if (userId != winner_id) {
+        } else if (userId !== winner_id) {
           history.push(`/games/${id}/defeat`);
         }
         status.current = "gameOver";
@@ -218,7 +206,6 @@ const Game = () => {
     ) {
       setCurrentStep(currentStep + 1);
       setGameOn(false);
-      console.log("game ooooooooooooooof");
       setCurrentQuestion({});
       if (userId === game.player1_id) {
         nextTurn();
@@ -239,7 +226,6 @@ const Game = () => {
       setNewQuestionTime(new Date(Date.now()));
     } else {
       setGameOn(false);
-      console.log("game ooooof 22222");
       setCurrentQuestion({});
       setCurrentQuestionIndex("");
       if (userId === game.player1_id) {
@@ -248,14 +234,12 @@ const Game = () => {
       } else if (userId === game.player2_id) {
         let totalTime = Date.now() - timePlayer1;
         setTimePlayer1(totalTime);
+        gameEnd();
       }
     }
   };
 
   useEffect(() => {
-    console.log("---------------------------");
-    console.log(count3);
-    console.log(timePlayer1);
     if (count3 === 3) {
       gameEnd();
     }
@@ -263,7 +247,6 @@ const Game = () => {
   }, [timePlayer1]);
 
   const destroyGame = () => {
-    console.log("test destroy");
     if (status.current === "gameOver") {
       return;
     }
@@ -278,8 +261,6 @@ const Game = () => {
   };
 
   const forfeitGame = () => {
-    console.log("test forfeit");
-
     if (status.current === "gameOver") {
       return;
     }
@@ -297,9 +278,7 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    })
-      .then((data) => console.log("forfeit"))
-      .catch((error) => console.log(error));
+    }).catch((error) => console.log(error));
   };
 
   const movePlayer1 = (step) => {
@@ -336,7 +315,6 @@ const Game = () => {
           y: -5 * marchHeight - groundHeight,
         });
         setGameOn(false);
-        console.log("game ooooooooooooooooof 3");
         gameEnd(game.player1_id);
       }
     }
@@ -360,16 +338,19 @@ const Game = () => {
       setTimeout(function () {
         if (game_history.response_correct) {
           step += 1;
+          setOpponentStep(opponentStep + 1);
         } else if (step > 0 && !game_history.response_correct) {
           step -= 1;
         }
         if (step > 0) {
           movePlayer1(-step);
+          setOpponentStep(step);
         } else if (step === 0) {
           setPerso2Animation({
             x: 0,
             y: -groundHeight,
           });
+          setOpponentStep(step);
         }
       }, Date.parse(game_history.response_time) - startOpponentGame);
     });
@@ -386,16 +367,10 @@ const Game = () => {
     }
   }, [firstGameHistory]);
 
-  const promptUser = () => {
-    prompt("Si vous rechargez la page, la partie sera détruite");
-  };
-
   useEffect(() => {
     window.addEventListener("resize", movePlayer1);
-    // window.addEventListener("beforeunload", promptUser);
     return () => {
       window.removeEventListener("resize", movePlayer1);
-      // window.removeEventListener("beforeunload", promptUser);
     };
   }, []);
 
@@ -422,11 +397,13 @@ const Game = () => {
         step={currentStep}
         controlsList="play"
       />
-      {((game &&
+      {((status.current === "gameReady" &&
+        game &&
         gameOn &&
         userId === game.player2_id &&
         game.turn === "player2") ||
-        (game &&
+        (status.current === "gameReady" &&
+          game &&
           gameOn &&
           userId === game.player1_id &&
           game.turn === "player1")) && (

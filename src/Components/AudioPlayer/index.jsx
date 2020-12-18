@@ -1,6 +1,8 @@
 import "./style.scss";
 import React from "react";
 import { useAudioPlayer } from "react-use-audio-player";
+import Play from "./assets/play.png";
+import Stop from "./assets/pause.png";
 
 const AudioPlayer = ({ file }) => {
   const { togglePlayPause, ready, loading, playing } = useAudioPlayer({
@@ -8,18 +10,12 @@ const AudioPlayer = ({ file }) => {
     format: "mp3",
     autoplay: true,
     onend: () => console.log("sound has ended!"),
+    volume: 0.1,
   });
-
-  // if (!ready && !loading) return <div>No audio to play</div>;
-  // if (loading) return <div>Loading audio</div>;
 
   return (
     <div className="audio-button" onClick={togglePlayPause}>
-      {playing ? (
-        <i className="fas fa-pause"></i>
-      ) : (
-        <i className="fas fa-play"></i>
-      )}
+      {playing ? <img src={Stop} /> : <img src={Play} />}
     </div>
   );
 };

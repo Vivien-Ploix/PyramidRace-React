@@ -8,6 +8,7 @@ Le premier arrivé en haut (ou le plus haut après les 12 questions) gagne la Py
 ## Comment jouer ?
 
 C'est très simple, il te suffit d'aller à cette adresse et de créer un compte : https://pyramid-race.herokuapp.com/
+Au cas ou tu es curieux, lien de l'API : https://github.com/Vivien-Ploix/PyramidRace-API
 
 ### Je préfere le localhost
 
@@ -16,8 +17,6 @@ Ok, telecharge notre repo, ouvre le et :
 
 - npm install
 - npm start
-
-Au cas ou tu es curieux, lien de l'API : https://github.com/Vivien-Ploix/PyramidRace-API
 
 Et voila !
 
@@ -39,6 +38,6 @@ Regarde en haut à droite de ta barre de navigation, tu touveras nos réseaux (e
 
 ### Project by
 
-Anthony KRIEF, Vivien PLOIX, Olivier Fitoussi ( et un grand merci a Cindy notre déssinatrice !)
+Anthony KRIEF, Vivien PLOIX, Olivier FITOUSSI ( et un grand merci a Cindy notre déssinatrice !)
 
 ### Nous espérons que notre jeu vous plaira !
