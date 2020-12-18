@@ -7,7 +7,7 @@ Le premier arrivé en haut (ou le plus haut après les 12 questions) gagne la Py
 
 ## Comment jouer ?
 
-C'est très simple, il te suffit d'aller à cette adresse et de créer un compte : https://pyramid-race.herokuapp.com/
+C'est très simple, il te suffit d'aller à cette adresse et de créer un compte : https://pyramid-race.herokuapp.com/.
 Au cas ou tu es curieux, lien de l'API : https://github.com/Vivien-Ploix/PyramidRace-API
 
 ### Je préfere le localhost
