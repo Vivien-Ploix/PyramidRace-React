@@ -117,6 +117,15 @@ const NavBar = () => {
                       <i className="lni-instagram-original"></i>
                     </a>
                   </li>
+                  <li>
+                    <a
+                      href="https://www.youtube.com/watch?v=RLoWrNB0fJE"
+                      target="_blank"
+                    >
+                      {" "}
+                      <i className="lni lni-youtube"></i>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </nav>

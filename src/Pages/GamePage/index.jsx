@@ -1,5 +1,5 @@
 import "./style.scss";
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Cookie from "js-cookie";
@@ -11,12 +11,17 @@ import Countdown from "./Countdown/index";
 import ModalDiv from "./Modal/index";
 import { motion } from "framer-motion";
 import { Prompt } from "react-router-dom";
+import ReactAudioPlayer from "react-audio-player";
+import { AudioPlayerProvider } from "react-use-audio-player";
+
+import PyramidRaceAudio from "./assets/PyramidRaceMusicOGG.ogg";
+import AudioPlayer from "../../Components/AudioPlayer/index.jsx";
 
 const Game = () => {
   let { id } = useParams();
   const userId = useSelector((state) => state.id);
   const tokenCookie = Cookie.get("token");
-  const [game, setGame] = useState({});
+  const [game, setGame] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState({});
@@ -30,11 +35,14 @@ const Game = () => {
   const [firstGameHistory, setFirstGameHistory] = useState({});
   const history = useHistory();
   const pyramidRef = useRef();
-  const [count, setCount] = useState(0);
   const [count2, setCount2] = useState(0);
   const [count3, setCount3] = useState(0);
   const [timePlayer1, setTimePlayer1] = useState(0);
   const [timePlayer2, setTimePlayer2] = useState(0);
+
+  // Status possible: pending, gameFetched, questionsFetched, gameReady, gameOver
+
+  const status = useRef("pending");
 
   const openModal = () => {
     setIsOpen(true);
@@ -46,12 +54,13 @@ const Game = () => {
   };
 
   useEffect(() => {
-    if (questions.length === 12) {
+    if (status.current === "questionsFetched") {
       setCurrentQuestion(questions[currentQuestionIndex]);
       console.log("game oooooooooooooooooooooooooon");
       setTimePlayer1(Date.now());
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setGameOn(true);
+      status.current = "gameReady";
     }
   }, [questions]);
 
@@ -60,28 +69,26 @@ const Game = () => {
   }, []);
 
   useEffect(() => {
-    if (game && count === 2) {
+    if (game && status.current === "gameFetched") {
       if (userId === game.player2_id) {
         fetchHistoryPlayer1();
       }
       fetchQuestions();
     }
-    // return () => {
-    //   if (game && count === 2) {
-    //     console.log("test usablecallback");
-    //     userId === game.player1_id ? destroyGame() : forfeitGame();
-    //   }
-    // };
-  }, [count, game]);
-
-  useEffect(() => {
-    setCount(count + 1);
+    return () => {
+      if (game && status.current === "gameReady") {
+        userId === game.player1_id ? destroyGame() : forfeitGame();
+      }
+    };
   }, [game]);
 
   const fetchGame = () => {
     fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`)
       .then((response) => response.json())
-      .then((data) => setGame(data))
+      .then((data) => {
+        setGame(data);
+        status.current = "gameFetched";
+      })
       .catch((error) => console.log(error));
   };
 
@@ -90,7 +97,13 @@ const Game = () => {
       `https://opentdb.com/api.php?amount=12&category=${game.category}&difficulty=${game.difficulty}&type=multiple`
     )
       .then((response) => response.json())
-      .then((data) => setQuestions(data.results));
+      .then((data) => {
+        setQuestions(data.results);
+        status.current = "questionsFetched";
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const fetchHistoryPlayer1 = () => {
@@ -104,6 +117,7 @@ const Game = () => {
   };
 
   const gameEnd = (firstWinnerId) => {
+    console.log("game endedddddd", firstWinnerId);
     let winner_id;
     if (!firstWinnerId) {
       let player1_correct_answers = gameHistories.filter(
@@ -142,12 +156,13 @@ const Game = () => {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => {
+      .then(() => {
         if (userId === winner_id) {
           history.push(`/games/${id}/victory`);
         } else if (userId != winner_id) {
           history.push(`/games/${id}/defeat`);
         }
+        status.current = "gameOver";
       })
       .catch((error) => console.log(error));
   };
@@ -165,7 +180,11 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).catch((error) => console.log(error));
+    })
+      .then(() => {
+        status.current = "gameOver";
+      })
+      .catch((error) => console.log(error));
   };
 
   const nextQuestion = (answer_choice, correct_answer) => {
@@ -232,24 +251,23 @@ const Game = () => {
       }
     }
   };
-  useEffect(() => {
-    console.log(gameOn);
-  }, [gameOn]);
 
   useEffect(() => {
-    if (count3 === 2) {
+    console.log("---------------------------");
+    console.log(count3);
+    console.log(timePlayer1);
+    if (count3 === 3) {
       gameEnd();
     }
     setCount3(count3 + 1);
   }, [timePlayer1]);
 
-  const alertUser = (e) => {
-    e.preventDefault();
-    e.returnValue = "";
-  };
-
   const destroyGame = () => {
     console.log("test destroy");
+    if (status.current === "gameOver") {
+      return;
+    }
+
     fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`, {
       method: "delete",
       headers: {
@@ -260,10 +278,11 @@ const Game = () => {
   };
 
   const forfeitGame = () => {
-    // if (!gameOn) {
-    //   return;
-    // }
     console.log("test forfeit");
+
+    if (status.current === "gameOver") {
+      return;
+    }
 
     const data = {
       game: {
@@ -278,7 +297,9 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).catch((error) => console.log(error));
+    })
+      .then((data) => console.log("forfeit"))
+      .catch((error) => console.log(error));
   };
 
   const movePlayer1 = (step) => {
@@ -359,46 +380,56 @@ const Game = () => {
   }, [currentStep]);
 
   useEffect(() => {
-    console.log(perso1animation);
-  }, [perso1animation]);
-
-  useEffect(() => {
-    console.log(gameHistories);
     setCount2(count2 + 1);
-    if (count2 === 1) {
+    if (count2 === 1 && game.turn === "player2") {
       movePlayer2();
     }
   }, [firstGameHistory]);
 
+  const promptUser = () => {
+    prompt("Si vous rechargez la page, la partie sera détruite");
+  };
+
   useEffect(() => {
     window.addEventListener("resize", movePlayer1);
+    // window.addEventListener("beforeunload", promptUser);
     return () => {
       window.removeEventListener("resize", movePlayer1);
+      // window.removeEventListener("beforeunload", promptUser);
     };
   }, []);
 
   return (
     <div className="game_page">
-      {userId === game.player1_id && gameOn && (
+      {game && userId === game.player1_id && gameOn && (
         <Prompt
           message={() => "Si vous quittez cette page la partie sera perdue !"}
         />
       )}
-      {userId === game.player2_id && gameOn && (
+      {game && userId === game.player2_id && gameOn && (
         <Prompt
           message={() =>
             "Si vous quittez cette page, vous serez automatiquement déclaré forfait !"
           }
         />
       )}
-
+      <AudioPlayerProvider>
+        <AudioPlayer file={PyramidRaceAudio} />
+      </AudioPlayerProvider>
       <ModalDiv
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}
         step={currentStep}
+        controlsList="play"
       />
-      {((gameOn && userId === game.player2_id && game.turn === "player2") ||
-        (gameOn && userId === game.player1_id && game.turn === "player1")) && (
+      {((game &&
+        gameOn &&
+        userId === game.player2_id &&
+        game.turn === "player2") ||
+        (game &&
+          gameOn &&
+          userId === game.player1_id &&
+          game.turn === "player1")) && (
         <>
           <Countdown onExpire={nextQuestion} resetTick={currentQuestionIndex} />
           <QuestionCard
