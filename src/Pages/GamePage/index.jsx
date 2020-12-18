@@ -11,7 +11,6 @@ import Countdown from "./Countdown/index";
 import ModalDiv from "./Modal/index";
 import { motion } from "framer-motion";
 import { Prompt } from "react-router-dom";
-import { updateScorePlayer } from "../../Components/Fetch/index";
 
 const Game = () => {
   let { id } = useParams();
@@ -49,9 +48,10 @@ const Game = () => {
   useEffect(() => {
     if (questions.length === 12) {
       setCurrentQuestion(questions[currentQuestionIndex]);
-      setGameOn(true);
+      console.log("game oooooooooooooooooooooooooon");
       setTimePlayer1(Date.now());
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setGameOn(true);
     }
   }, [questions]);
 
@@ -60,13 +60,22 @@ const Game = () => {
   }, []);
 
   useEffect(() => {
-    setCount(count + 1);
-    if (count === 1) {
-      if (userId == game.player2_id) {
+    if (game && count === 2) {
+      if (userId === game.player2_id) {
         fetchHistoryPlayer1();
       }
       fetchQuestions();
     }
+    // return () => {
+    //   if (game && count === 2) {
+    //     console.log("test usablecallback");
+    //     userId === game.player1_id ? destroyGame() : forfeitGame();
+    //   }
+    // };
+  }, [count, game]);
+
+  useEffect(() => {
+    setCount(count + 1);
   }, [game]);
 
   const fetchGame = () => {
@@ -89,7 +98,6 @@ const Game = () => {
       .then((response) => response.json())
       .then((data) => {
         setGameHistories(data);
-        console.log(data[0]);
         setFirstGameHistory(data[0]);
       })
       .catch((error) => console.log(error));
@@ -97,8 +105,6 @@ const Game = () => {
 
   const gameEnd = (firstWinnerId) => {
     let winner_id;
-    console.log(timePlayer1);
-    console.log(timePlayer2);
     if (!firstWinnerId) {
       let player1_correct_answers = gameHistories.filter(
         (game_history) => game_history.response_correct === true
@@ -122,7 +128,6 @@ const Game = () => {
       winner_id = firstWinnerId;
     }
 
-    console.log(winner_id);
     const data = {
       game: {
         winner_id: winner_id,
@@ -136,13 +141,15 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    }).then((response) => {
-      if (userId == winner_id) {
-        history.push(`/games/${id}/victory`);
-      } else if (userId != winner_id) {
-        history.push(`/games/${id}/defeat`);
-      }
-    });
+    })
+      .then((response) => {
+        if (userId === winner_id) {
+          history.push(`/games/${id}/victory`);
+        } else if (userId != winner_id) {
+          history.push(`/games/${id}/defeat`);
+        }
+      })
+      .catch((error) => console.log(error));
   };
 
   const nextTurn = () => {
@@ -158,7 +165,7 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    });
+    }).catch((error) => console.log(error));
   };
 
   const nextQuestion = (answer_choice, correct_answer) => {
@@ -181,7 +188,7 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    });
+    }).catch((error) => console.log(error));
 
     if (answer_choice && answer_choice === correct_answer && currentStep < 5) {
       setCurrentStep(currentStep + 1);
@@ -192,11 +199,12 @@ const Game = () => {
     ) {
       setCurrentStep(currentStep + 1);
       setGameOn(false);
+      console.log("game ooooooooooooooof");
       setCurrentQuestion({});
-      if (userId == game.player1_id) {
+      if (userId === game.player1_id) {
         nextTurn();
         openModal();
-      } else if (userId == game.player2_id) {
+      } else if (userId === game.player2_id) {
         gameEnd(game.player2_id);
       }
     } else if (
@@ -212,66 +220,51 @@ const Game = () => {
       setNewQuestionTime(new Date(Date.now()));
     } else {
       setGameOn(false);
+      console.log("game ooooof 22222");
       setCurrentQuestion({});
       setCurrentQuestionIndex("");
-      if (userId == game.player1_id) {
+      if (userId === game.player1_id) {
         nextTurn();
         openModal();
-      } else if (userId == game.player2_id) {
+      } else if (userId === game.player2_id) {
         let totalTime = Date.now() - timePlayer1;
-        console.log(totalTime);
         setTimePlayer1(totalTime);
       }
     }
   };
+  useEffect(() => {
+    console.log(gameOn);
+  }, [gameOn]);
 
   useEffect(() => {
-    console.log("tesssttttttt");
     if (count3 === 2) {
-      console.log(timePlayer1);
       gameEnd();
     }
     setCount3(count3 + 1);
   }, [timePlayer1]);
 
-  // Prompt before leaving page
-
-  // useEffect(() => {
-
-  //   const usableCallback = () => (
-  //     userId == game.player1_id ? destroyGame() : forfeitGame()
-  //   );
-
-  //   window.addEventListener('beforeunload', alertUser)
-  //   window.addEventListener('unload', usableCallback)
-
-  //   return () => {
-  //     window.removeEventListener('beforeunload', alertUser)
-  //     window.removeEventListener('unload', usableCallback)
-  //   }
-  // }, [])
-
   const alertUser = (e) => {
     e.preventDefault();
     e.returnValue = "";
   };
+
   const destroyGame = () => {
-    if (!gameOn) {
-      return;
-    }
+    console.log("test destroy");
     fetch(`https://pyramid-race-api.herokuapp.com/games/${id}`, {
       method: "delete",
       headers: {
         Authorization: `${tokenCookie}`,
         "Content-Type": "application/json",
       },
-    });
+    }).catch((error) => console.log(error));
   };
 
   const forfeitGame = () => {
-    if (!gameOn) {
-      return;
-    }
+    // if (!gameOn) {
+    //   return;
+    // }
+    console.log("test forfeit");
+
     const data = {
       game: {
         winner_id: game.player1_id,
@@ -285,10 +278,13 @@ const Game = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    });
+    }).catch((error) => console.log(error));
   };
 
   const movePlayer1 = (step) => {
+    if (!pyramidRef.current) {
+      return;
+    }
     const pyramidHeight = pyramidRef.current.getBoundingClientRect().height;
     const pyramidWidth = pyramidRef.current.getBoundingClientRect().width;
     const marchHeight = pyramidHeight / 6.57;
@@ -319,37 +315,46 @@ const Game = () => {
           y: -5 * marchHeight - groundHeight,
         });
         setGameOn(false);
+        console.log("game ooooooooooooooooof 3");
         gameEnd(game.player1_id);
       }
     }
   };
 
   const movePlayer2 = () => {
+    if (!pyramidRef.current) {
+      return;
+    }
+    const pyramidHeight = pyramidRef.current.getBoundingClientRect().height;
+    const groundHeight = pyramidHeight / 100;
+
     let step = 0;
     const startOpponentGame = Date.parse(gameHistories[0].question_time);
     const endOpponentGame = Date.parse(
       gameHistories[gameHistories.length - 1].response_time
     );
-    console.log(startOpponentGame);
-    console.log(endOpponentGame);
     const totalTimeOpponent = endOpponentGame - startOpponentGame;
-    console.log(totalTimeOpponent);
     setTimePlayer2(totalTimeOpponent);
     gameHistories.forEach((game_history) => {
-      console.log(game_history.response_correct);
       setTimeout(function () {
         if (game_history.response_correct) {
           step += 1;
-        } else {
+        } else if (step > 0 && !game_history.response_correct) {
           step -= 1;
         }
-        movePlayer1(-step);
+        if (step > 0) {
+          movePlayer1(-step);
+        } else if (step === 0) {
+          setPerso2Animation({
+            x: 0,
+            y: -groundHeight,
+          });
+        }
       }, Date.parse(game_history.response_time) - startOpponentGame);
     });
   };
 
   useEffect(() => {
-    console.log(currentStep);
     movePlayer1(currentStep);
   }, [currentStep]);
 
@@ -359,7 +364,6 @@ const Game = () => {
 
   useEffect(() => {
     console.log(gameHistories);
-    console.log(firstGameHistory);
     setCount2(count2 + 1);
     if (count2 === 1) {
       movePlayer2();
@@ -375,12 +379,12 @@ const Game = () => {
 
   return (
     <div className="game_page">
-      {userId == game.player1_id && gameOn && (
+      {userId === game.player1_id && gameOn && (
         <Prompt
           message={() => "Si vous quittez cette page la partie sera perdue !"}
         />
       )}
-      {userId == game.player2_id && gameOn && (
+      {userId === game.player2_id && gameOn && (
         <Prompt
           message={() =>
             "Si vous quittez cette page, vous serez automatiquement déclaré forfait !"
@@ -393,8 +397,8 @@ const Game = () => {
         closeModal={closeModal}
         step={currentStep}
       />
-      {((gameOn && userId == game.player2_id && game.turn == "player2") ||
-        (gameOn && userId == game.player1_id && game.turn === "player1")) && (
+      {((gameOn && userId === game.player2_id && game.turn === "player2") ||
+        (gameOn && userId === game.player1_id && game.turn === "player1")) && (
         <>
           <Countdown onExpire={nextQuestion} resetTick={currentQuestionIndex} />
           <QuestionCard

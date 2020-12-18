@@ -18,15 +18,11 @@ const Jumbotron = () => {
     12,
     14,
     15,
-    16,
     17,
     18,
-    19,
     21,
     22,
     23,
-    24,
-    26,
     27,
     28,
     31,
@@ -45,12 +41,11 @@ const Jumbotron = () => {
   };
 
   useEffect(() => {
-    fetchPossibleOpponents();
+    if (userId) {
+      fetchPossibleOpponents();
+      fetchPlayerScore();
+    }
   }, []);
-
-  useEffect(() => {
-    console.log(possibleOpponents);
-  }, [possibleOpponents]);
 
   const startGame = () => {
     let difficulty;
@@ -86,15 +81,16 @@ const Jumbotron = () => {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
-        history.push(`/game/${response.id}`);
-      });
+        history.push(`/games/${response.id}`);
+      })
+      .catch((error) => console.log(error));
   };
 
   const fetchPlayerScore = () => {
     fetch(`https://pyramid-race-api.herokuapp.com/users/${userId}/games`)
       .then((response) => response.json())
       .then((data) => {
-        let games_won = data.filter((game) => game.winner_id == userId).length;
+        let games_won = data.filter((game) => game.winner_id === userId).length;
         let games_lost = data.filter(
           (game) => game.winner_id != userId && game.winner_id !== null
         ).length;
@@ -103,10 +99,6 @@ const Jumbotron = () => {
       })
       .catch((error) => console.log(error));
   };
-
-  useEffect(() => {
-    fetchPlayerScore();
-  }, []);
 
   return (
     <div
@@ -130,7 +122,7 @@ const Jumbotron = () => {
               <ul className="header-btn">
                 {userId === null && (
                   <li>
-                    <Link to="/sign-up" className="main-btn btn-one">
+                    <Link to="/login" className="main-btn btn-one">
                       Je veux jouer
                     </Link>
                   </li>

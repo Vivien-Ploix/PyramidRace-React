@@ -14,6 +14,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import Victory from "./Pages/Victory";
 import Defeat from "./Pages/Defeat";
 import Team from "./Pages/Team";
+import NotFound from "./Pages/404";
 
 const App = () => {
   return (
@@ -35,7 +36,7 @@ const App = () => {
               <Route path="/gameInfos">
                 <GameInfos />
               </Route>
-              <Route path="/game/:id">
+              <Route exact path="/games/:id">
                 <GamePage />
               </Route>
               <Route path="/games/:id/victory">
@@ -46,6 +47,9 @@ const App = () => {
               </Route>
               <Route path="/team">
                 <Team />
+              </Route>
+              <Route>
+                <NotFound />
               </Route>
             </Switch>
             <Footer />

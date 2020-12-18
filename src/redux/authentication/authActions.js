@@ -1,15 +1,15 @@
-import { AUTHENTICATION_SUCCESS, AUTHENTICATION_FAILED, LOAD_ACCOUNT, LOGOUT_SUCCESS } from './authTypes';
+import { AUTHENTICATION_SUCCESS, LOGOUT_SUCCESS } from "./authTypes";
 
 export const authSuccess = (response) => {
-    return {
-        type: AUTHENTICATION_SUCCESS,
-        id: response.data.id,
-        attributes: response.data.attributes,
-    };
+  return {
+    type: AUTHENTICATION_SUCCESS,
+    id: parseInt(response.data.id),
+    attributes: response.data.attributes,
+  };
 };
 
 export const logoutSuccess = () => {
-    return {
-        type: LOGOUT_SUCCESS
-    }
-}
+  return {
+    type: LOGOUT_SUCCESS,
+  };
+};

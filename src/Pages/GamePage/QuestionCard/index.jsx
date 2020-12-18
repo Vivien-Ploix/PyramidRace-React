@@ -35,20 +35,20 @@ const QuestionCard = ({
 
   return (
     <>
-      <div className="card question-card" style={{ width: "18rem" }}>
+      <div className="question-card">
         <div className="card-body">
-          <div className="card-text">
-            <span dangerouslySetInnerHTML={{ __html: question }} />
+          <div className="card-text text-center">
+            <h6 dangerouslySetInnerHTML={{ __html: question }} />
             <br />
             <div className="answers">
               {questionArray.map((choice) => {
                 return (
                   <button
-                    className="answer-button"
+                    className="answer-button btn btn-warning"
                     onClick={() => nextQuestion(choice, correct_answer)}
                     key={questionArray.indexOf(choice)}
                   >
-                    <span dangerouslySetInnerHTML={{ __html: choice }} />
+                    <p dangerouslySetInnerHTML={{ __html: choice }} />
                   </button>
                 );
               })}

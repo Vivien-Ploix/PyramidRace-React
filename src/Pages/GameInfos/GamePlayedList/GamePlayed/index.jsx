@@ -1,14 +1,14 @@
 import "./style.scss";
 import React, { useState, useEffect } from "react";
-import { Link, useHistory } from 'react-router-dom'
-import Cookie from 'js-cookie'
-import { useSelector } from 'react-redux'
+import { Link, useHistory } from "react-router-dom";
+import Cookie from "js-cookie";
+import { useSelector } from "react-redux";
 
 const GamePlayed = ({ opponentId, winner_id, gameId }) => {
-  const tokenCookie = Cookie.get('token')
+  const tokenCookie = Cookie.get("token");
   const [opponent, setOpponent] = useState({});
-  const history = useHistory()
-  const userId = useSelector((state) => state.id)
+  const history = useHistory();
+  const userId = useSelector((state) => state.id);
   const categoriesArray = [
     9,
     10,
@@ -16,15 +16,11 @@ const GamePlayed = ({ opponentId, winner_id, gameId }) => {
     12,
     14,
     15,
-    16,
     17,
     18,
-    19,
     21,
     22,
     23,
-    24,
-    26,
     27,
     28,
     31,
@@ -43,7 +39,6 @@ const GamePlayed = ({ opponentId, winner_id, gameId }) => {
   useEffect(() => {
     getOpponentInfos();
   }, []);
-
 
   const startGame = (opponent_id) => {
     const data = {
@@ -66,10 +61,10 @@ const GamePlayed = ({ opponentId, winner_id, gameId }) => {
     })
       .then((response) => response.json())
       .then((response) => {
-        history.push(`/game/${response.id}`);
-      });
+        history.push(`/games/${response.id}`);
+      })
+      .catch((error) => console.log(error));
   };
-
 
   return (
     <div className="container card-game">
@@ -83,8 +78,8 @@ const GamePlayed = ({ opponentId, winner_id, gameId }) => {
                     <b>Victoire</b>
                   </h1>
                   <p>
-                    Tu es le grand gagnant de cette partie ! ( calme toi quand
-                    meme)
+                    Tu es le grand gagnant de cette partie ! (calme-toi quand
+                    même)
                   </p>
                 </div>
               )}
@@ -102,14 +97,20 @@ const GamePlayed = ({ opponentId, winner_id, gameId }) => {
                   <h1>
                     <b>En cours</b>
                   </h1>
-                  <p>La partie n'est pas encore terminée ! Quel suspens !</p>
+                  <p>La partie n'est pas encore terminée ! Quel suspense !</p>
                 </div>
               )}
 
               <small>Adversaire : {opponent.pseudo}</small>
             </div>
-            {winner_id === null && <Link to={{pathname: `/game/${gameId}`}}>Jouer</Link>}
-            {winner_id !== null && <Link to="/" onClick={() => startGame(opponentId)}>Rejouer</Link>}
+            {winner_id === null && (
+              <Link to={{ pathname: `/games/${gameId}` }}>Jouer</Link>
+            )}
+            {winner_id !== null && (
+              <Link to="/" onClick={() => startGame(opponentId)}>
+                Rejouer
+              </Link>
+            )}
 
             <div className="ico-card">
               <i className="lni lni-pyramids"></i>

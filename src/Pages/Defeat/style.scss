@@ -1,0 +1,38 @@
+.Defeat-Page {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+h1.text-center {
+  margin-top: 7%;
+}
+
+.Defeat-button {
+  border-radius: 12px 0 12px 0;
+  background: rgb(214, 107, 7);
+  border: none;
+  color: rgb(0, 0, 0);
+  font: bold 12px Verdana;
+  padding: 20px;
+  float: right;
+  margin-right: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 30%;
+}
+
+.defeat-image {
+  width: 40%;
+  margin-bottom: 30px;
+}
+
+a {
+  color: black;
+}
+
+a:hover {
+  color: whitesmoke;
+}
