@@ -31,7 +31,8 @@ const SearchBar = () => {
         .then((response) => response.json())
         .then((data) => {
           setSuggestions(data || []);
-        });
+        })
+        .catch((error) => console.log(error));
     } else {
       setSuggestions([]);
     }
@@ -71,15 +72,16 @@ const SearchBar = () => {
     })
       .then((response) => response.json())
       .then((response) => {
-        history.push(`/game/${response.id}`);
-      });
+        history.push(`/games/${response.id}`);
+      })
+      .catch((error) => console.log(error));
   };
 
   const fetchPlayerScore = () => {
     fetch(`https://pyramid-race-api.herokuapp.com/users/${userId}/games`)
       .then((response) => response.json())
       .then((data) => {
-        let games_won = data.filter((game) => game.winner_id == userId).length;
+        let games_won = data.filter((game) => game.winner_id === userId).length;
         let games_lost = data.filter(
           (game) => game.winner_id != userId && game.winner_id !== null
         ).length;
