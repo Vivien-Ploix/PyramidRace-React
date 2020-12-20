@@ -11,23 +11,7 @@ const Jumbotron = () => {
   const [possibleOpponents, setPossibleOpponents] = useState([]);
   const [playerScore, setPlayerScore] = useState(0);
 
-  const categoriesArray = [
-    9,
-    10,
-    11,
-    12,
-    14,
-    15,
-    17,
-    18,
-    21,
-    22,
-    23,
-    27,
-    28,
-    31,
-    32,
-  ];
+  const categoriesArray = [9, 10, 11, 12, 14, 15, 17, 18, 21, 22, 23, 31, 32];
 
   const fetchPossibleOpponents = () => {
     fetch(
