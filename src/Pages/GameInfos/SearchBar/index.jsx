@@ -14,11 +14,8 @@ const SearchBar = () => {
   const [playerScore, setPlayerScore] = useState(0);
 
   //Enables selecting the range of categories in the API and excluding the ones not containing enough questions
-  const arrayQuestions = [...Array(32 - 9 + 1)].map((item, index) => 9 + index);
-  const categoriesToBeRemoved = [13, 20, 25, 29, 30];
-  const categoriesArray = arrayQuestions.filter(
-    (item) => !categoriesToBeRemoved.includes(item)
-  );
+
+  const categoriesArray = [9, 10, 11, 12, 14, 15, 17, 18, 21, 22, 23, 31, 32];
 
   const handleInputChange = (e) => {
     const { value } = e.currentTarget;
