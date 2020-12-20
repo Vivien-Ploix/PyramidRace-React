@@ -127,9 +127,7 @@ const Game = () => {
         winner_id = game.player1_id;
       }
     }
-    console.log("currentStep", currentStep);
-    console.log("opponentStep ", opponentStep);
-    console.log("winner_id", winner_id);
+
     const data = {
       game: {
         winner_id: winner_id,
